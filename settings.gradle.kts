@@ -15,7 +15,8 @@ plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    // Kotlin/Wasm registers its own repositories for Node.js, Yarn and Binaryen downloads.
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
     repositories {
         google()
         mavenCentral()
@@ -23,4 +24,6 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Stundenplan"
-include(":app")
+include(":shared")
+include(":androidApp")
+include(":webApp")
