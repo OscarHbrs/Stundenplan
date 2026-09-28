@@ -8,7 +8,7 @@ plugins {
 
 kotlin {
     android {
-        namespace = "com.example.stundenplan.shared"
+        namespace = "io.github.oscarhbrs.stundenplan.shared"
         compileSdk = 37
         minSdk = 26
     }

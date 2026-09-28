@@ -25,7 +25,7 @@ Kotlin Multiplatform + Compose Multiplatform – die Oberfläche wird einmal ges
 | `androidApp/`| Android-Einstieg (`MainActivity`) und Speicherung per SharedPreferences |
 | `webApp/`    | Web-Einstieg (Kotlin/Wasm), `index.html`, PWA-Manifest, Service Worker  |
 
-Stundenplan ändern: `shared/src/commonMain/kotlin/com/example/stundenplan/data/ScheduleData.kt`.
+Stundenplan ändern: `shared/src/commonMain/kotlin/io/github/oscarhbrs/stundenplan/data/ScheduleData.kt`.
 
 ## Entwickeln
 

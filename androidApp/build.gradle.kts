@@ -8,13 +8,13 @@ plugins {
 val releaseKeystore = System.getenv("ANDROID_KEYSTORE_FILE")?.let(::file)?.takeIf { it.exists() }
 
 android {
-    namespace = "com.example.stundenplan"
+    namespace = "io.github.oscarhbrs.stundenplan"
     compileSdk {
         version = release(37)
     }
 
     defaultConfig {
-        applicationId = "com.example.stundenplan"
+        applicationId = "io.github.oscarhbrs.stundenplan"
         minSdk = 26
         targetSdk = 37
         versionCode = (System.getenv("VERSION_CODE") ?: "1").toInt()

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated from webApp/icon.svg -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <group android:translateX="30" android:translateY="28.4"
+        android:scaleX="0.2" android:scaleY="0.2">
+        <path android:fillColor="#FFFFFF" android:fillType="evenOdd" android:pathData="M28,24h184a28,28 0,0 1,28,28v176a28,28 0,0 1,-28,28h-184a28,28 0,0 1,-28,-28v-176a28,28 0,0 1,28,-28zM40,116h28a8,8 0,0 1,8,8v20a8,8 0,0 1,-8,8h-28a8,8 0,0 1,-8,-8v-20a8,8 0,0 1,8,-8zM106,116h28a8,8 0,0 1,8,8v20a8,8 0,0 1,-8,8h-28a8,8 0,0 1,-8,-8v-20a8,8 0,0 1,8,-8zM172,116h28a8,8 0,0 1,8,8v20a8,8 0,0 1,-8,8h-28a8,8 0,0 1,-8,-8v-20a8,8 0,0 1,8,-8zM40,176h28a8,8 0,0 1,8,8v20a8,8 0,0 1,-8,8h-28a8,8 0,0 1,-8,-8v-20a8,8 0,0 1,8,-8zM106,176h28a8,8 0,0 1,8,8v20a8,8 0,0 1,-8,8h-28a8,8 0,0 1,-8,-8v-20a8,8 0,0 1,8,-8zM172,176h28a8,8 0,0 1,8,8v20a8,8 0,0 1,-8,8h-28a8,8 0,0 1,-8,-8v-20a8,8 0,0 1,8,-8z" />
+        <path android:fillColor="#FFFFFF" android:pathData="M63,0h0a11,11 0,0 1,11,11v34a11,11 0,0 1,-11,11h-0a11,11 0,0 1,-11,-11v-34a11,11 0,0 1,11,-11zM177,0h0a11,11 0,0 1,11,11v34a11,11 0,0 1,-11,11h-0a11,11 0,0 1,-11,-11v-34a11,11 0,0 1,11,-11z" />
+    </group>
+</vector>
