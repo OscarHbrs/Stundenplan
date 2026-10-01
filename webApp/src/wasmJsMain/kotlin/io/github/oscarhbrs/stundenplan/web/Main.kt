@@ -13,14 +13,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.ComposeViewport
 import io.github.oscarhbrs.stundenplan.App
 import io.github.oscarhbrs.stundenplan.data.KeyValueStorage
+import io.github.oscarhbrs.stundenplan.data.MensaRepository
 import io.github.oscarhbrs.stundenplan.data.SelectionStore
+import io.github.oscarhbrs.stundenplan.mensa.MensaJson
+import io.github.oscarhbrs.stundenplan.mensa.MensaPlan
 import kotlinx.browser.document
 import kotlinx.browser.window
+import kotlinx.coroutines.await
 import org.w3c.dom.events.Event
+import org.w3c.fetch.RequestInit
+import org.w3c.fetch.Response
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
     val store = SelectionStore(LocalStorage)
+    // Built every few hours by the deploy workflow; the website itself can't be fetched cross-origin.
+    val mensa = MensaRepository(LocalStorage) {
+        MensaJson.decodeFromString(MensaPlan.serializer(), fetchText("mensa.json"))
+    }
     ComposeViewport(document.getElementById("app")!!) {
         var insets by remember { mutableStateOf(readSafeAreaInsets()) }
         DisposableEffect(Unit) {
@@ -29,7 +39,7 @@ fun main() {
             hideLoadingScreen()
             onDispose { window.removeEventListener("resize", listener) }
         }
-        App(store = store, safeAreaInsets = insets)
+        App(store = store, mensa = mensa, safeAreaInsets = insets)
     }
 }
 
@@ -45,6 +55,15 @@ private fun readSafeAreaInsets(): WindowInsets = WindowInsets(
 private fun safeAreaInset(side: String): Int = js(
     "parseInt(getComputedStyle(document.getElementById('safe-area-probe')).getPropertyValue('padding-' + side)) || 0"
 )
+
+private suspend fun fetchText(url: String): String {
+    val response = window.fetch(url, noCacheRequest()).await<Response>()
+    check(response.ok) { "HTTP ${response.status} for $url" }
+    return response.text().await<JsString>().toString()
+}
+
+// kotlinx-browser's RequestInit() sets every omitted field to null, which fetch() rejects.
+private fun noCacheRequest(): RequestInit = js("({ cache: 'no-cache' })")
 
 private fun hideLoadingScreen() {
     document.getElementById("loading")?.remove()

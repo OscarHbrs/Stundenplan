@@ -24,8 +24,24 @@ Kotlin Multiplatform + Compose Multiplatform – die Oberfläche wird einmal ges
 | `shared/`    | Gesamte App: Stundenplandaten (`data/`) und Oberfläche (`ui/`)          |
 | `androidApp/`| Android-Einstieg (`MainActivity`) und Speicherung per SharedPreferences |
 | `webApp/`    | Web-Einstieg (Kotlin/Wasm), `index.html`, PWA-Manifest, Service Worker  |
+| `mensa/`     | Mensa-Speiseplan: Datenmodell, HTML-Parser und JSON-Export (`jvmMain`)  |
 
 Stundenplan ändern: `shared/src/commonMain/kotlin/io/github/oscarhbrs/stundenplan/data/ScheduleData.kt`.
+
+## Mensa-Speiseplan
+
+Der Speiseplan der Mensa Sankt Augustin kommt live von der Webseite des Studierendenwerks Bonn.
+
+- **Android** lädt die Seite direkt und speichert den letzten Stand für offline.
+- **Web/iPhone:** Der Browser darf die Seite des Studierendenwerks nicht direkt laden (CORS). Darum erzeugt
+  der Workflow `deploy-web.yml` mehrmals täglich eine `mensa.json` und veröffentlicht sie mit der Web-App.
+
+Lokal: `./gradlew :mensa:jvmRun --args=$PWD/mensa.json` schreibt den aktuellen Plan, `./gradlew :mensa:jvmTest`
+prüft den Parser gegen gespeicherte Antworten der Webseite.
+
+**Wichtig:** GitHub pausiert geplante Workflows, wenn 60 Tage lang nichts ins Repository gepusht wurde. Dann
+unter *Actions* → *Web-App deployen* → **Enable workflow** wieder einschalten, sonst bleibt der Speiseplan
+der Web-App auf dem alten Stand.
 
 ## Entwickeln
 
@@ -46,7 +62,8 @@ done
 ## Veröffentlichen (GitHub Actions)
 
 - **Web-App:** Jeder Push auf `main` baut die Web-App und veröffentlicht sie auf GitHub Pages
-  (`.github/workflows/deploy-web.yml`).
+  (`.github/workflows/deploy-web.yml`). Zusätzlich läuft der Workflow zeitgesteuert (Mo–Sa alle 3 Stunden
+  tagsüber und täglich um Mitternacht), um den Mensa-Speiseplan zu aktualisieren.
 - **Android-APK:** Jeder Tag `v*` (z. B. `git tag v1.1.0 && git push origin v1.1.0`) baut eine
   signierte APK und hängt sie an ein GitHub-Release (`.github/workflows/release-android.yml`).
 

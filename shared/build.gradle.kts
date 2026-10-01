@@ -25,6 +25,7 @@ kotlin {
             api(libs.compose.ui)
             api(libs.compose.material3)
             implementation(libs.kotlinx.datetime)
+            api(project(":mensa"))
         }
     }
 }

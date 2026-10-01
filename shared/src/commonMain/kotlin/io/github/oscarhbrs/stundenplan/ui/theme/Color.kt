@@ -12,6 +12,10 @@ val DarkSurface = Color(0xFF1E1E1E)
 
 val CurrentTimeLineColor = Color(0xFFFF6A3D)
 
+val Co2Green = Color(0xFF43A047)
+val Co2Orange = Color(0xFFFB8C00)
+val Co2Red = Color(0xFFE53935)
+
 data class SubjectColor(val light: Color, val dark: Color)
 
 object SubjectColors {

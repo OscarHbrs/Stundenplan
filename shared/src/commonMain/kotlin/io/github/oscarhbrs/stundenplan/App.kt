@@ -7,6 +7,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import io.github.oscarhbrs.stundenplan.data.MensaRepository
 import io.github.oscarhbrs.stundenplan.data.SelectionStore
 import io.github.oscarhbrs.stundenplan.ui.AppRoot
 import io.github.oscarhbrs.stundenplan.ui.LocalSafeAreaInsets
@@ -19,14 +20,14 @@ import io.github.oscarhbrs.stundenplan.ui.theme.StundenplanTheme
  *   where Compose cannot detect them itself, e.g. the web. `null` uses the Material defaults.
  */
 @Composable
-fun App(store: SelectionStore, safeAreaInsets: WindowInsets? = null) {
+fun App(store: SelectionStore, mensa: MensaRepository, safeAreaInsets: WindowInsets? = null) {
     CompositionLocalProvider(LocalSafeAreaInsets provides safeAreaInsets) {
         StundenplanTheme {
             Surface(
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background
             ) {
-                AppRoot(store = store)
+                AppRoot(store = store, mensa = mensa)
             }
         }
     }

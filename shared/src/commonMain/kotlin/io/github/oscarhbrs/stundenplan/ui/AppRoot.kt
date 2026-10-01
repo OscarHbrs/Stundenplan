@@ -17,16 +17,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import io.github.oscarhbrs.stundenplan.data.GroupSelection
+import io.github.oscarhbrs.stundenplan.data.MensaRepository
 import io.github.oscarhbrs.stundenplan.data.SelectionStore
 import io.github.oscarhbrs.stundenplan.ui.theme.AppIcons
 
 private enum class AppTab(val label: String, val icon: ImageVector) {
     STUNDENPLAN("Stundenplan", AppIcons.Calendar),
-    STUDIENGANG("Studiengang", AppIcons.School)
+    STUDIENGANG("Studiengang", AppIcons.School),
+    MENSA("Mensa", AppIcons.Restaurant)
 }
 
 @Composable
-fun AppRoot(store: SelectionStore) {
+fun AppRoot(store: SelectionStore, mensa: MensaRepository) {
     var selection by remember { mutableStateOf(store.load()) }
     var currentTab by remember {
         mutableStateOf(if (selection == null) AppTab.STUDIENGANG else AppTab.STUNDENPLAN)
@@ -61,6 +63,7 @@ fun AppRoot(store: SelectionStore) {
                         currentTab = AppTab.STUNDENPLAN
                     }
                 )
+                AppTab.MENSA -> MensaScreen(repository = mensa)
             }
         }
     }
