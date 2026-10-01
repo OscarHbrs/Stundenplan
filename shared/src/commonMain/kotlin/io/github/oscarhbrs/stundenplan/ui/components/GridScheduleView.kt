@@ -36,9 +36,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.github.oscarhbrs.stundenplan.data.Course
+import io.github.oscarhbrs.stundenplan.data.ScheduledCourse
 import io.github.oscarhbrs.stundenplan.data.Weekday
-import io.github.oscarhbrs.stundenplan.data.displayLabel
 import io.github.oscarhbrs.stundenplan.data.displayTitle
 import io.github.oscarhbrs.stundenplan.data.effectiveNote
 import io.github.oscarhbrs.stundenplan.data.endTime
@@ -68,7 +67,7 @@ private val GERMAN_MONTHS_SHORT = listOf(
 
 @Composable
 fun GridScheduleView(
-    schedule: Map<Weekday, List<Course>>,
+    schedule: Map<Weekday, List<ScheduledCourse>>,
     today: Weekday?,
     modifier: Modifier = Modifier
 ) {
@@ -198,11 +197,12 @@ private fun TimeAxis(totalHeight: Dp) {
 }
 
 @Composable
-private fun DayColumn(courses: List<Course>, modifier: Modifier = Modifier) {
+private fun DayColumn(courses: List<ScheduledCourse>, modifier: Modifier = Modifier) {
     BoxWithConstraints(modifier = modifier) {
         val columnWidth = maxWidth
         val laidOut = remember(courses) { layoutOverlaps(courses) }
-        laidOut.forEach { (course, lane, laneCount) ->
+        laidOut.forEach { (scheduled, lane, laneCount) ->
+            val course = scheduled.course
             val startMinutes = course.startTime().hour * 60 + course.startTime().minute
             val endMinutes = course.endTime().hour * 60 + course.endTime().minute
             val topOffset = DP_PER_MINUTE * (startMinutes - GRID_START_HOUR * 60)
@@ -211,7 +211,7 @@ private fun DayColumn(courses: List<Course>, modifier: Modifier = Modifier) {
             val laneStart = laneWidth * lane
 
             CourseBlock(
-                course = course,
+                scheduled = scheduled,
                 modifier = Modifier
                     .padding(top = topOffset)
                     .offset(x = laneStart)
@@ -223,17 +223,18 @@ private fun DayColumn(courses: List<Course>, modifier: Modifier = Modifier) {
     }
 }
 
-private fun layoutOverlaps(courses: List<Course>): List<Triple<Course, Int, Int>> {
-    val sorted = courses.sortedWith(compareBy({ it.startTime() }, { it.endTime() }))
-    val result = mutableListOf<Triple<Course, Int, Int>>()
-    var cluster = mutableListOf<Course>()
+private fun layoutOverlaps(courses: List<ScheduledCourse>): List<Triple<ScheduledCourse, Int, Int>> {
+    val sorted = courses.sortedWith(compareBy({ it.course.startTime() }, { it.course.endTime() }))
+    val result = mutableListOf<Triple<ScheduledCourse, Int, Int>>()
+    var cluster = mutableListOf<ScheduledCourse>()
     var clusterEnd: LocalTime? = null
 
     fun flushCluster() {
         if (cluster.isEmpty()) return
         val laneEnds = mutableListOf<LocalTime>()
-        val laneOf = LinkedHashMap<Course, Int>()
-        for (c in cluster) {
+        val laneOf = LinkedHashMap<ScheduledCourse, Int>()
+        for (scheduled in cluster) {
+            val c = scheduled.course
             var lane = laneEnds.indexOfFirst { it <= c.startTime() }
             if (lane == -1) {
                 laneEnds.add(c.endTime())
@@ -241,21 +242,22 @@ private fun layoutOverlaps(courses: List<Course>): List<Triple<Course, Int, Int>
             } else {
                 laneEnds[lane] = c.endTime()
             }
-            laneOf[c] = lane
+            laneOf[scheduled] = lane
         }
         val laneCount = laneEnds.size
         cluster.forEach { c -> result.add(Triple(c, laneOf.getValue(c), laneCount)) }
         cluster = mutableListOf()
     }
 
-    for (c in sorted) {
+    for (scheduled in sorted) {
+        val c = scheduled.course
         val end = clusterEnd
         if (cluster.isEmpty() || end == null || c.startTime() < end) {
-            cluster.add(c)
+            cluster.add(scheduled)
             clusterEnd = if (end == null || c.endTime() > end) c.endTime() else end
         } else {
             flushCluster()
-            cluster.add(c)
+            cluster.add(scheduled)
             clusterEnd = c.endTime()
         }
     }
@@ -264,7 +266,8 @@ private fun layoutOverlaps(courses: List<Course>): List<Triple<Course, Int, Int>
 }
 
 @Composable
-private fun CourseBlock(course: Course, modifier: Modifier = Modifier) {
+private fun CourseBlock(scheduled: ScheduledCourse, modifier: Modifier = Modifier) {
+    val course = scheduled.course
     val isDark = isSystemInDarkTheme()
     val subjectColor = SubjectColors.colorFor(course.title)
     val accent = if (isDark) subjectColor.dark else subjectColor.light
@@ -316,7 +319,7 @@ private fun CourseBlock(course: Course, modifier: Modifier = Modifier) {
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                course.groups.displayLabel()?.let { label ->
+                scheduled.groupLabel?.let { label ->
                     Text(
                         text = label,
                         fontSize = 9.sp,
@@ -349,7 +352,7 @@ private fun CourseBlock(course: Course, modifier: Modifier = Modifier) {
     }
 
     if (showDetails) {
-        CourseDetailDialog(course = course, onDismiss = { showDetails = false })
+        CourseDetailDialog(course = course, groupLabel = scheduled.groupLabel, onDismiss = { showDetails = false })
     }
 }
 

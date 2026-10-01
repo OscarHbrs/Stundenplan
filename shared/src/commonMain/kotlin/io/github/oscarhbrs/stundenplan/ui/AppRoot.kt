@@ -16,9 +16,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import io.github.oscarhbrs.stundenplan.data.GroupSelection
 import io.github.oscarhbrs.stundenplan.data.MensaRepository
 import io.github.oscarhbrs.stundenplan.data.SelectionStore
+import io.github.oscarhbrs.stundenplan.data.toggle
 import io.github.oscarhbrs.stundenplan.ui.theme.AppIcons
 
 private enum class AppTab(val label: String, val icon: ImageVector) {
@@ -31,7 +31,7 @@ private enum class AppTab(val label: String, val icon: ImageVector) {
 fun AppRoot(store: SelectionStore, mensa: MensaRepository) {
     var selection by remember { mutableStateOf(store.load()) }
     var currentTab by remember {
-        mutableStateOf(if (selection == null) AppTab.STUDIENGANG else AppTab.STUNDENPLAN)
+        mutableStateOf(if (selection.isEmpty()) AppTab.STUDIENGANG else AppTab.STUNDENPLAN)
     }
 
     Scaffold(
@@ -56,11 +56,10 @@ fun AppRoot(store: SelectionStore, mensa: MensaRepository) {
             when (currentTab) {
                 AppTab.STUNDENPLAN -> ScheduleScreen(selection = selection)
                 AppTab.STUDIENGANG -> ProgramSelectionScreen(
-                    currentSelection = selection,
-                    onSelect = { newSelection: GroupSelection ->
-                        selection = newSelection
-                        store.save(newSelection)
-                        currentTab = AppTab.STUNDENPLAN
+                    selected = selection,
+                    onToggle = { group ->
+                        selection = selection.toggle(group)
+                        store.save(selection)
                     }
                 )
                 AppTab.MENSA -> MensaScreen(repository = mensa)

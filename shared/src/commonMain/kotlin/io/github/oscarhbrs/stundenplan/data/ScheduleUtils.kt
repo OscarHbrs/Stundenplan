@@ -28,10 +28,36 @@ fun currentWeekday(date: LocalDate = nowLocal().date): Weekday? = when (date.day
 fun Course.startTime(): LocalTime = LocalTime.parse(start)
 fun Course.endTime(): LocalTime = LocalTime.parse(end)
 
-fun scheduleFor(selection: GroupSelection): Map<Weekday, List<Course>> {
-    val all = ScheduleData.coursesFor(selection.program)
+/**
+ * A course as shown in the timetable. Identical courses of several programs (e.g. a shared lecture)
+ * are merged into one entry; [groups] are the selected groups that attend it.
+ */
+data class ScheduledCourse(val course: Course, val groups: List<GroupSelection>, val groupLabel: String?)
+
+fun scheduleFor(selections: List<GroupSelection>): Map<Weekday, List<ScheduledCourse>> {
+    val merged = LinkedHashMap<Course, Pair<Course, MutableList<GroupSelection>>>()
+    selections.sortedForDisplay().forEach { selection ->
+        ScheduleData.coursesFor(selection.program)
+            .filter { it.groups.matches(selection.group) }
+            .forEach { course ->
+                val entry = merged.getOrPut(course.copy(groups = GroupSpec.All)) { course to mutableListOf() }
+                entry.second += selection
+            }
+    }
+    val scheduled = merged.values.map { (course, groups) ->
+        ScheduledCourse(course, groups, groupLabel(course, groups, selections))
+    }
     return orderedWeekdays.associateWith { day ->
-        all.filter { it.day == day && it.groups.matches(selection.group) }
-            .sortedBy { it.startTime() }
+        scheduled.filter { it.course.day == day }.sortedBy { it.course.startTime() }
+    }
+}
+
+private fun groupLabel(course: Course, groups: List<GroupSelection>, selections: List<GroupSelection>): String? {
+    if (selections.size <= 1) return course.groups.displayLabel()
+    val byProgram = groups.groupBy { it.program }
+    val singleProgram = selections.map { it.program }.distinct().size == 1
+    return byProgram.entries.joinToString(" · ") { (program, attending) ->
+        val numbers = attending.joinToString("+") { it.group.toString() }
+        if (singleProgram) "Gr. $numbers" else "${program.displayName} $numbers"
     }
 }

@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import io.github.oscarhbrs.stundenplan.data.Course
-import io.github.oscarhbrs.stundenplan.data.displayLabel
 import io.github.oscarhbrs.stundenplan.data.displayTitle
 import io.github.oscarhbrs.stundenplan.data.effectiveNote
 import io.github.oscarhbrs.stundenplan.ui.theme.AppIcons
@@ -32,7 +31,7 @@ import io.github.oscarhbrs.stundenplan.ui.theme.SubjectColors
 import io.github.oscarhbrs.stundenplan.ui.theme.TimeTextStyle
 
 @Composable
-fun CourseDetailDialog(course: Course, onDismiss: () -> Unit) {
+fun CourseDetailDialog(course: Course, groupLabel: String?, onDismiss: () -> Unit) {
     val isDark = isSystemInDarkTheme()
     val subjectColor = SubjectColors.colorFor(course.title)
     val accent = if (isDark) subjectColor.dark else subjectColor.light
@@ -78,7 +77,7 @@ fun CourseDetailDialog(course: Course, onDismiss: () -> Unit) {
 
                 DetailRow(icon = AppIcons.Place, label = "Raum", value = course.room, tint = accent)
                 DetailRow(icon = AppIcons.Person, label = "Dozent", value = course.lecturer, tint = accent)
-                course.groups.displayLabel()?.let { label ->
+                groupLabel?.let { label ->
                     DetailRow(icon = AppIcons.Group, label = "Gruppe", value = label, tint = accent)
                 }
 

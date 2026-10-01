@@ -24,9 +24,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.oscarhbrs.stundenplan.data.GroupSelection
+import io.github.oscarhbrs.stundenplan.data.summary
 import io.github.oscarhbrs.stundenplan.data.currentWeekday
 import io.github.oscarhbrs.stundenplan.data.scheduleFor
 import io.github.oscarhbrs.stundenplan.ui.components.GridScheduleView
@@ -34,7 +36,7 @@ import io.github.oscarhbrs.stundenplan.ui.components.LegendCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScheduleScreen(selection: GroupSelection?, modifier: Modifier = Modifier) {
+fun ScheduleScreen(selection: List<GroupSelection>, modifier: Modifier = Modifier) {
     var today by remember { mutableStateOf(currentWeekday()) }
     LaunchedEffect(Unit) {
         today = currentWeekday()
@@ -48,12 +50,10 @@ fun ScheduleScreen(selection: GroupSelection?, modifier: Modifier = Modifier) {
                     Column {
                         Text("Stundenplan", fontWeight = FontWeight.Bold)
                         Text(
-                            text = if (selection != null) {
-                                "${selection.program.displayName} · Gruppe ${selection.group}"
-                            } else {
-                                "Kein Studiengang gewählt"
-                            },
+                            text = if (selection.isNotEmpty()) selection.summary() else "Keine Gruppe gewählt",
                             fontSize = 12.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -65,7 +65,7 @@ fun ScheduleScreen(selection: GroupSelection?, modifier: Modifier = Modifier) {
             )
         }
     ) { innerPadding ->
-        if (selection == null) {
+        if (selection.isEmpty()) {
             EmptySelectionNotice(modifier = Modifier.padding(innerPadding))
         } else {
             val schedule = remember(selection) { scheduleFor(selection) }
@@ -79,7 +79,7 @@ fun ScheduleScreen(selection: GroupSelection?, modifier: Modifier = Modifier) {
                 GridScheduleView(schedule = schedule, today = today)
                 Spacer(modifier = Modifier.size(9.dp))
                 Text(
-                    text = selection.program.termRange,
+                    text = selection.map { it.program.termRange }.distinct().joinToString(" / "),
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center,
                     fontSize = 12.sp,
@@ -102,7 +102,7 @@ private fun EmptySelectionNotice(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Bitte wähle zuerst einen Studiengang im Tab \"Studiengang\" aus.",
+            text = "Bitte wähle zuerst mindestens eine Gruppe im Tab \"Studiengang\" aus.",
             fontSize = 14.sp,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant

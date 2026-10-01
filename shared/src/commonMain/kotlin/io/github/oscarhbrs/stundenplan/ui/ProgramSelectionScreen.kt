@@ -14,10 +14,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -33,14 +33,15 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.github.oscarhbrs.stundenplan.data.GROUP_NUMBERS
 import io.github.oscarhbrs.stundenplan.data.GroupSelection
 import io.github.oscarhbrs.stundenplan.data.Program
 import io.github.oscarhbrs.stundenplan.ui.theme.AppIcons
 
 @Composable
 fun ProgramSelectionScreen(
-    currentSelection: GroupSelection?,
-    onSelect: (GroupSelection) -> Unit,
+    selected: List<GroupSelection>,
+    onToggle: (GroupSelection) -> Unit,
     modifier: Modifier = Modifier
 ) {
     // On the web, the notch height comes from the safe-area insets; Android keeps its fixed padding.
@@ -54,13 +55,13 @@ fun ProgramSelectionScreen(
     ) {
         item {
             Text(
-                text = "Studiengang wählen",
+                text = "Gruppen wählen",
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
                 color = MaterialTheme.colorScheme.onSurface
             )
             Text(
-                text = "Wähle deinen Studiengang und deine Gruppe, um deinen Stundenplan zu sehen.",
+                text = "Wähle eine oder mehrere Gruppen, auch aus verschiedenen Studiengängen. Der Stundenplan zeigt alle Kurse dieser Gruppen.",
                 fontSize = 13.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(top = 4.dp)
@@ -70,8 +71,8 @@ fun ProgramSelectionScreen(
         items(Program.entries.toList()) { program ->
             ProgramSection(
                 program = program,
-                currentSelection = currentSelection,
-                onSelect = onSelect
+                selected = selected,
+                onToggle = onToggle
             )
         }
     }
@@ -80,11 +81,12 @@ fun ProgramSelectionScreen(
 @Composable
 private fun ProgramSection(
     program: Program,
-    currentSelection: GroupSelection?,
-    onSelect: (GroupSelection) -> Unit
+    selected: List<GroupSelection>,
+    onToggle: (GroupSelection) -> Unit
 ) {
+    val selectedCount = selected.count { it.program == program }
     var expanded by remember(program) {
-        mutableStateOf(currentSelection == null || currentSelection.program == program)
+        mutableStateOf(selected.isEmpty() || selectedCount > 0)
     }
 
     Card(
@@ -110,9 +112,13 @@ private fun ProgramSection(
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        text = program.fullName,
+                        text = when (selectedCount) {
+                            0 -> program.fullName
+                            1 -> "${program.fullName} · 1 Gruppe gewählt"
+                            else -> "${program.fullName} · $selectedCount Gruppen gewählt"
+                        },
                         fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = if (selectedCount > 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
                 Icon(
@@ -127,12 +133,12 @@ private fun ProgramSection(
                     modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    (1..6).forEach { group ->
-                        val isSelected = currentSelection?.program == program && currentSelection.group == group
+                    GROUP_NUMBERS.forEach { group ->
+                        val selection = GroupSelection(program, group)
                         GroupRow(
                             group = group,
-                            isSelected = isSelected,
-                            onClick = { onSelect(GroupSelection(program, group)) }
+                            isSelected = selection in selected,
+                            onClick = { onToggle(selection) }
                         )
                     }
                 }
@@ -153,12 +159,12 @@ private fun GroupRow(group: Int, isSelected: Boolean, onClick: () -> Unit) {
             modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Surface(
-                modifier = Modifier.size(8.dp),
-                shape = CircleShape,
-                color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant
-            ) {}
-            Spacer(modifier = Modifier.size(10.dp))
+            Checkbox(
+                checked = isSelected,
+                onCheckedChange = null,
+                modifier = Modifier.size(20.dp)
+            )
+            Spacer(modifier = Modifier.size(12.dp))
             Text(
                 text = "Gruppe $group",
                 fontSize = 14.sp,
