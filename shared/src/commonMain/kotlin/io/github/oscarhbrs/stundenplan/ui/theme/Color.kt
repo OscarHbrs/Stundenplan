@@ -10,6 +10,9 @@ val DarkPrimary = Color(0xFF4DB6AC)
 val DarkBackground = Color(0xFF121212)
 val DarkSurface = Color(0xFF1E1E1E)
 
+val Fb02Light = Color(0xFF3949AB)
+val Fb02Dark = Color(0xFF7986CB)
+
 val CurrentTimeLineColor = Color(0xFFFF6A3D)
 
 val Co2Green = Color(0xFF43A047)

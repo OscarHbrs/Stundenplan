@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.platform.LocalUriHandler
 import io.github.oscarhbrs.stundenplan.data.MensaRepository
 import io.github.oscarhbrs.stundenplan.data.SelectionStore
 import io.github.oscarhbrs.stundenplan.mensa.MensaScraper
@@ -21,8 +23,11 @@ class MainActivity : ComponentActivity() {
         val mensa = MensaRepository(storage) {
             withContext(Dispatchers.IO) { MensaScraper.loadPlan(::httpGet) }
         }
+        val uriHandler = CustomTabsUriHandler(this)
         setContent {
-            App(store = store, mensa = mensa)
+            CompositionLocalProvider(LocalUriHandler provides uriHandler) {
+                App(store = store, mensa = mensa)
+            }
         }
     }
 }

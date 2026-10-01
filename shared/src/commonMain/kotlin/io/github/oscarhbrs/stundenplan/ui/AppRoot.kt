@@ -24,7 +24,8 @@ import io.github.oscarhbrs.stundenplan.ui.theme.AppIcons
 private enum class AppTab(val label: String, val icon: ImageVector) {
     STUNDENPLAN("Stundenplan", AppIcons.Calendar),
     STUDIENGANG("Studiengang", AppIcons.School),
-    MENSA("Mensa", AppIcons.Restaurant)
+    MENSA("Mensa", AppIcons.Restaurant),
+    PORTALE("Portale", AppIcons.Link)
 }
 
 @Composable
@@ -63,6 +64,7 @@ fun AppRoot(store: SelectionStore, mensa: MensaRepository) {
                     }
                 )
                 AppTab.MENSA -> MensaScreen(repository = mensa)
+                AppTab.PORTALE -> PortalsScreen()
             }
         }
     }
