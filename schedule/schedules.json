@@ -1,0 +1,1083 @@
+{
+    "term": {
+        "start": "2026-09-28",
+        "end": "2027-01-22",
+        "breaks": [
+            {
+                "start": "2026-12-21",
+                "end": "2027-01-03"
+            }
+        ]
+    },
+    "programs": [
+        {
+            "id": "BCSP",
+            "name": "Bachelor Cyber Security & Privacy",
+            "groups": 6,
+            "courses": [
+                {
+                    "day": "MONTAG",
+                    "start": "08:15",
+                    "end": "09:45",
+                    "title": "Netze",
+                    "type": "UEBUNG_PRAKTIKUM",
+                    "room": "St-C055, St-C115",
+                    "lecturer": "Schneider M.",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            1,
+                            6
+                        ]
+                    }
+                },
+                {
+                    "day": "MONTAG",
+                    "start": "08:15",
+                    "end": "09:45",
+                    "title": "Datenschutz, IT-Recht und Privatheit",
+                    "type": "UEBUNG",
+                    "room": "St-B060",
+                    "lecturer": "Haferkorn",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            2,
+                            5
+                        ]
+                    }
+                },
+                {
+                    "day": "MONTAG",
+                    "start": "10:00",
+                    "end": "11:30",
+                    "title": "Algebraische Strukturen",
+                    "type": "VORLESUNG",
+                    "room": "St-HS3",
+                    "lecturer": "Müller",
+                    "groups": {
+                        "type": "all"
+                    }
+                },
+                {
+                    "day": "MONTAG",
+                    "start": "11:45",
+                    "end": "13:15",
+                    "title": "Datenschutz, IT-Recht und Privatheit",
+                    "type": "UEBUNG",
+                    "room": "St-B060",
+                    "lecturer": "Haferkorn",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            3,
+                            4
+                        ]
+                    }
+                },
+                {
+                    "day": "DIENSTAG",
+                    "start": "10:00",
+                    "end": "11:30",
+                    "title": "Programmierung 1",
+                    "type": "VORLESUNG",
+                    "room": "St-HS8",
+                    "lecturer": "Kless",
+                    "groups": {
+                        "type": "all"
+                    }
+                },
+                {
+                    "day": "DIENSTAG",
+                    "start": "11:45",
+                    "end": "14:00",
+                    "title": "Programmierung 1",
+                    "type": "UEBUNG",
+                    "room": "St-C063",
+                    "lecturer": "Kless",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            3,
+                            4
+                        ]
+                    }
+                },
+                {
+                    "day": "DIENSTAG",
+                    "start": "13:30",
+                    "end": "15:00",
+                    "title": "Netze",
+                    "type": "UEBUNG_PRAKTIKUM",
+                    "room": "St-C055, St-C117",
+                    "lecturer": "Rademacher",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            2,
+                            5
+                        ]
+                    }
+                },
+                {
+                    "day": "DIENSTAG",
+                    "start": "13:30",
+                    "end": "15:00",
+                    "title": "Datenschutz, IT-Recht und Privatheit",
+                    "type": "UEBUNG",
+                    "room": "St-C118",
+                    "lecturer": "Haferkorn",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            1,
+                            6
+                        ]
+                    }
+                },
+                {
+                    "day": "DIENSTAG",
+                    "start": "15:15",
+                    "end": "16:45",
+                    "title": "Datenschutz, IT-Recht und Privatheit",
+                    "type": "VORLESUNG",
+                    "room": "St-C116",
+                    "lecturer": "Haferkorn",
+                    "groups": {
+                        "type": "all"
+                    }
+                },
+                {
+                    "day": "MITTWOCH",
+                    "start": "08:15",
+                    "end": "09:45",
+                    "title": "Algebraische Strukturen",
+                    "type": "UEBUNG",
+                    "room": "St-B060",
+                    "lecturer": "Müller",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            3,
+                            4
+                        ]
+                    }
+                },
+                {
+                    "day": "MITTWOCH",
+                    "start": "10:00",
+                    "end": "11:30",
+                    "title": "Algebraische Strukturen",
+                    "type": "VORLESUNG",
+                    "room": "St-HS3",
+                    "lecturer": "Müller",
+                    "groups": {
+                        "type": "all"
+                    }
+                },
+                {
+                    "day": "MITTWOCH",
+                    "start": "11:45",
+                    "end": "13:15",
+                    "title": "Netze",
+                    "type": "UEBUNG_PRAKTIKUM",
+                    "room": "St-C115",
+                    "lecturer": "Jansen",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            4
+                        ]
+                    }
+                },
+                {
+                    "day": "DONNERSTAG",
+                    "start": "08:15",
+                    "end": "09:45",
+                    "title": "Netze",
+                    "type": "VORLESUNG",
+                    "room": "St-HS1/2",
+                    "lecturer": "Böhmer J., Rademacher",
+                    "groups": {
+                        "type": "all"
+                    }
+                },
+                {
+                    "day": "DONNERSTAG",
+                    "start": "10:00",
+                    "end": "11:30",
+                    "title": "Netze",
+                    "type": "UEBUNG_PRAKTIKUM",
+                    "room": "St-C055, St-C063",
+                    "lecturer": "Böhmer J.",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            3
+                        ]
+                    }
+                },
+                {
+                    "day": "DONNERSTAG",
+                    "start": "13:30",
+                    "end": "15:00",
+                    "title": "Informationssicherheit",
+                    "type": "VORLESUNG",
+                    "room": "St-HS8",
+                    "lecturer": "Schiffner",
+                    "groups": {
+                        "type": "all"
+                    }
+                },
+                {
+                    "day": "DONNERSTAG",
+                    "start": "15:15",
+                    "end": "16:45",
+                    "title": "Informationssicherheit",
+                    "type": "UEBUNG",
+                    "room": "St-C119",
+                    "lecturer": "Schiffner",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            1,
+                            6
+                        ]
+                    },
+                    "note": "nur gerade KW (40–04)",
+                    "weeks": "EVEN"
+                },
+                {
+                    "day": "DONNERSTAG",
+                    "start": "15:15",
+                    "end": "16:45",
+                    "title": "Informationssicherheit",
+                    "type": "UEBUNG",
+                    "room": "St-C119",
+                    "lecturer": "Schiffner",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            3,
+                            4
+                        ]
+                    },
+                    "note": "nur ungerade KW (41–03)",
+                    "weeks": "ODD",
+                    "from": "2026-10-08",
+                    "until": "2027-01-14"
+                },
+                {
+                    "day": "DONNERSTAG",
+                    "start": "15:15",
+                    "end": "16:45",
+                    "title": "Informationssicherheit",
+                    "type": "UEBUNG",
+                    "room": "St-C063",
+                    "lecturer": "Fuchs",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            2,
+                            5
+                        ]
+                    },
+                    "note": "nur ungerade KW (41–03)",
+                    "weeks": "ODD",
+                    "from": "2026-10-08",
+                    "until": "2027-01-14"
+                },
+                {
+                    "day": "FREITAG",
+                    "start": "08:15",
+                    "end": "09:45",
+                    "title": "Programmierung 1",
+                    "type": "VORLESUNG",
+                    "room": "St-HS8",
+                    "lecturer": "Kless",
+                    "groups": {
+                        "type": "all"
+                    }
+                },
+                {
+                    "day": "FREITAG",
+                    "start": "10:00",
+                    "end": "11:30",
+                    "title": "Algebraische Strukturen",
+                    "type": "UEBUNG",
+                    "room": "St-B062",
+                    "lecturer": "Marcov",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            2,
+                            5
+                        ]
+                    }
+                },
+                {
+                    "day": "FREITAG",
+                    "start": "10:00",
+                    "end": "12:15",
+                    "title": "Programmierung 1",
+                    "type": "UEBUNG",
+                    "room": "St-C063, St-C181",
+                    "lecturer": "Kless",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            1,
+                            6
+                        ]
+                    }
+                },
+                {
+                    "day": "FREITAG",
+                    "start": "13:30",
+                    "end": "15:00",
+                    "title": "Algebraische Strukturen",
+                    "type": "UEBUNG",
+                    "room": "St-B062",
+                    "lecturer": "Marcov",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            1,
+                            6
+                        ]
+                    }
+                },
+                {
+                    "day": "FREITAG",
+                    "start": "13:30",
+                    "end": "15:45",
+                    "title": "Programmierung 1",
+                    "type": "UEBUNG",
+                    "room": "St-C063",
+                    "lecturer": "Kless",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            2,
+                            5
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "BI",
+            "name": "Bachelor Informatik",
+            "groups": 6,
+            "courses": [
+                {
+                    "day": "MONTAG",
+                    "start": "08:15",
+                    "end": "09:45",
+                    "title": "Programmierung 1",
+                    "type": "VORLESUNG",
+                    "room": "St-HS1/2",
+                    "lecturer": "Mersmann",
+                    "groups": {
+                        "type": "all"
+                    },
+                    "note": "ab KW 41 (41–04)",
+                    "from": "2026-10-05"
+                },
+                {
+                    "day": "MONTAG",
+                    "start": "10:00",
+                    "end": "11:30",
+                    "title": "Mathematische Grundlagen und Lineare Algebra",
+                    "type": "UEBUNG",
+                    "room": "St-C118",
+                    "lecturer": "Hülsmann",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            2,
+                            5
+                        ]
+                    },
+                    "note": "ab KW 41 (41–04)",
+                    "from": "2026-10-05"
+                },
+                {
+                    "day": "MONTAG",
+                    "start": "10:00",
+                    "end": "11:30",
+                    "title": "Netze",
+                    "type": "UEBUNG_PRAKTIKUM",
+                    "room": "St-C055, St-C119",
+                    "lecturer": "Schneider M.",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            3
+                        ]
+                    }
+                },
+                {
+                    "day": "MONTAG",
+                    "start": "11:45",
+                    "end": "13:15",
+                    "title": "Technische Informatik",
+                    "type": "UEBUNG",
+                    "room": "St-C118",
+                    "lecturer": "Schneider M.",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            2,
+                            5
+                        ]
+                    },
+                    "note": "ab KW 41 (41–04)",
+                    "from": "2026-10-05"
+                },
+                {
+                    "day": "MONTAG",
+                    "start": "13:30",
+                    "end": "15:00",
+                    "title": "Mathematische Grundlagen und Lineare Algebra",
+                    "type": "UEBUNG",
+                    "room": "St-B060",
+                    "lecturer": "Hülsmann",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            3,
+                            4
+                        ]
+                    },
+                    "note": "ab KW 41 (41–04)",
+                    "from": "2026-10-05"
+                },
+                {
+                    "day": "DIENSTAG",
+                    "start": "08:15",
+                    "end": "09:45",
+                    "title": "Programmierung 1",
+                    "type": "VORLESUNG",
+                    "room": "St-HS1/2",
+                    "lecturer": "Mersmann",
+                    "groups": {
+                        "type": "all"
+                    }
+                },
+                {
+                    "day": "DIENSTAG",
+                    "start": "10:00",
+                    "end": "11:30",
+                    "title": "Mathematische Grundlagen und Lineare Algebra",
+                    "type": "UEBUNG",
+                    "room": "St-C118",
+                    "lecturer": "Hülsmann",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            1,
+                            6
+                        ]
+                    },
+                    "note": "ab KW 41 (41–04)",
+                    "from": "2026-10-06"
+                },
+                {
+                    "day": "DIENSTAG",
+                    "start": "13:30",
+                    "end": "15:00",
+                    "title": "Mathematische Grundlagen und Lineare Algebra",
+                    "type": "VORLESUNG",
+                    "room": "St-HS1/2",
+                    "lecturer": "Hülsmann",
+                    "groups": {
+                        "type": "all"
+                    }
+                },
+                {
+                    "day": "DIENSTAG",
+                    "start": "15:15",
+                    "end": "16:45",
+                    "title": "Netze",
+                    "type": "UEBUNG_PRAKTIKUM",
+                    "room": "St-C055, St-C117",
+                    "lecturer": "Rademacher",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            2,
+                            4
+                        ]
+                    }
+                },
+                {
+                    "day": "MITTWOCH",
+                    "start": "09:00",
+                    "end": "11:15",
+                    "title": "Technische Informatik P1",
+                    "type": "PRAKTIKUM",
+                    "room": "St-C117, St-C119",
+                    "lecturer": "Schauer, Schneider M.",
+                    "groups": {
+                        "type": "allWithNote"
+                    },
+                    "note": "Gruppeneinteilung P1/P2 lt. Aushang · ab KW 42 (42–04)",
+                    "from": "2026-10-14"
+                },
+                {
+                    "day": "MITTWOCH",
+                    "start": "10:00",
+                    "end": "11:30",
+                    "title": "Technische Informatik",
+                    "type": "UEBUNG",
+                    "room": "St-C063",
+                    "lecturer": "Breuer",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            3,
+                            4
+                        ]
+                    },
+                    "note": "ab KW 41 (41–04)",
+                    "from": "2026-10-07"
+                },
+                {
+                    "day": "MITTWOCH",
+                    "start": "10:00",
+                    "end": "11:30",
+                    "title": "Netze",
+                    "type": "UEBUNG_PRAKTIKUM",
+                    "room": "St-C055, St-C115",
+                    "lecturer": "Jansen",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            5
+                        ]
+                    }
+                },
+                {
+                    "day": "MITTWOCH",
+                    "start": "11:45",
+                    "end": "13:15",
+                    "title": "Technische Informatik",
+                    "type": "VORLESUNG",
+                    "room": "St-HS1/2",
+                    "lecturer": "Breuer",
+                    "groups": {
+                        "type": "all"
+                    }
+                },
+                {
+                    "day": "MITTWOCH",
+                    "start": "13:30",
+                    "end": "15:00",
+                    "title": "Technische Informatik",
+                    "type": "UEBUNG",
+                    "room": "St-C175",
+                    "lecturer": "Schneider M.",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            1,
+                            6
+                        ]
+                    },
+                    "note": "ab KW 41 (41–04)",
+                    "from": "2026-10-07"
+                },
+                {
+                    "day": "MITTWOCH",
+                    "start": "15:15",
+                    "end": "17:30",
+                    "title": "Technische Informatik P2",
+                    "type": "PRAKTIKUM",
+                    "room": "St-C117, St-C119",
+                    "lecturer": "Schauer, Schneider M.",
+                    "groups": {
+                        "type": "allWithNote"
+                    },
+                    "note": "Gruppeneinteilung P1/P2 lt. Aushang · ab KW 42 (42–04)",
+                    "from": "2026-10-14"
+                },
+                {
+                    "day": "DONNERSTAG",
+                    "start": "08:15",
+                    "end": "09:45",
+                    "title": "Netze",
+                    "type": "VORLESUNG",
+                    "room": "St-HS1/2",
+                    "lecturer": "Böhmer J., Rademacher",
+                    "groups": {
+                        "type": "all"
+                    }
+                },
+                {
+                    "day": "DONNERSTAG",
+                    "start": "10:00",
+                    "end": "12:15",
+                    "title": "Programmierung 1",
+                    "type": "PRAKTIKUM",
+                    "room": "St-C016",
+                    "lecturer": "Mersmann",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            1,
+                            6
+                        ]
+                    }
+                },
+                {
+                    "day": "DONNERSTAG",
+                    "start": "10:00",
+                    "end": "12:15",
+                    "title": "Programmierung 1",
+                    "type": "PRAKTIKUM",
+                    "room": "St-C177",
+                    "lecturer": "Razzaq",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            2,
+                            5
+                        ]
+                    }
+                },
+                {
+                    "day": "DONNERSTAG",
+                    "start": "13:30",
+                    "end": "15:00",
+                    "title": "Mathematische Grundlagen und Lineare Algebra",
+                    "type": "VORLESUNG",
+                    "room": "St-HS1/2",
+                    "lecturer": "Hülsmann",
+                    "groups": {
+                        "type": "all"
+                    }
+                },
+                {
+                    "day": "DONNERSTAG",
+                    "start": "15:15",
+                    "end": "16:45",
+                    "title": "Netze",
+                    "type": "UEBUNG_PRAKTIKUM",
+                    "room": "St-C055, St-C175",
+                    "lecturer": "Jansen",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            1,
+                            6
+                        ]
+                    }
+                },
+                {
+                    "day": "FREITAG",
+                    "start": "10:00",
+                    "end": "12:15",
+                    "title": "Programmierung 1",
+                    "type": "PRAKTIKUM",
+                    "room": "St-C016",
+                    "lecturer": "Mersmann",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            3
+                        ]
+                    }
+                },
+                {
+                    "day": "FREITAG",
+                    "start": "10:00",
+                    "end": "12:15",
+                    "title": "Programmierung 1",
+                    "type": "PRAKTIKUM",
+                    "room": "St-C177",
+                    "lecturer": "Razzaq",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            4
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "BWI",
+            "name": "Bachelor Wirtschaftsinformatik",
+            "groups": 6,
+            "courses": [
+                {
+                    "day": "MONTAG",
+                    "start": "08:15",
+                    "end": "09:45",
+                    "title": "Programmierung 1",
+                    "type": "VORLESUNG",
+                    "room": "St-HS8",
+                    "lecturer": "Balg",
+                    "groups": {
+                        "type": "all"
+                    },
+                    "note": "ab KW 41 (41–04)",
+                    "from": "2026-10-05"
+                },
+                {
+                    "day": "MONTAG",
+                    "start": "10:00",
+                    "end": "11:30",
+                    "title": "Mathematische Grundlagen und Lineare Algebra",
+                    "type": "UEBUNG",
+                    "room": "St-B060",
+                    "lecturer": "Lanzerath",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            4
+                        ]
+                    },
+                    "note": "ab KW 41 (41–04)",
+                    "from": "2026-10-05"
+                },
+                {
+                    "day": "MONTAG",
+                    "start": "10:00",
+                    "end": "11:30",
+                    "title": "Mathematische Grundlagen und Lineare Algebra",
+                    "type": "UEBUNG",
+                    "room": "St-B062",
+                    "lecturer": "Weil",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            3
+                        ]
+                    },
+                    "note": "ab KW 41 (41–04)",
+                    "from": "2026-10-05"
+                },
+                {
+                    "day": "MONTAG",
+                    "start": "10:00",
+                    "end": "11:30",
+                    "title": "Einführung in die Wirtschaftsinformatik",
+                    "type": "UEBUNG",
+                    "room": "St-C115",
+                    "lecturer": "Bergmann",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            1,
+                            6
+                        ]
+                    },
+                    "note": "ab KW 42 (42–04)",
+                    "from": "2026-10-12"
+                },
+                {
+                    "day": "MONTAG",
+                    "start": "11:45",
+                    "end": "13:15",
+                    "title": "Einführung in die Wirtschaftsinformatik",
+                    "type": "VORLESUNG",
+                    "room": "St-HS8",
+                    "lecturer": "Bergmann",
+                    "groups": {
+                        "type": "all"
+                    },
+                    "note": "ab KW 41 (41–04)",
+                    "from": "2026-10-05"
+                },
+                {
+                    "day": "MONTAG",
+                    "start": "15:15",
+                    "end": "16:45",
+                    "title": "Mathematische Grundlagen und Lineare Algebra",
+                    "type": "UEBUNG",
+                    "room": "St-B062",
+                    "lecturer": "Weil",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            6
+                        ]
+                    },
+                    "note": "ab KW 41 (41–04)",
+                    "from": "2026-10-05"
+                },
+                {
+                    "day": "DIENSTAG",
+                    "start": "08:15",
+                    "end": "09:45",
+                    "title": "Programmierung 1",
+                    "type": "VORLESUNG",
+                    "room": "St-HS8",
+                    "lecturer": "Balg",
+                    "groups": {
+                        "type": "all"
+                    }
+                },
+                {
+                    "day": "DIENSTAG",
+                    "start": "10:00",
+                    "end": "11:30",
+                    "title": "Mathematische Grundlagen und Lineare Algebra",
+                    "type": "UEBUNG",
+                    "room": "St-B060",
+                    "lecturer": "Lanzerath",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            2
+                        ]
+                    },
+                    "note": "ab KW 41 (41–04)",
+                    "from": "2026-10-06"
+                },
+                {
+                    "day": "DIENSTAG",
+                    "start": "10:00",
+                    "end": "12:15",
+                    "title": "Programmierung 1",
+                    "type": "PRAKTIKUM",
+                    "room": "St-C175",
+                    "lecturer": "Balg",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            1,
+                            6
+                        ]
+                    }
+                },
+                {
+                    "day": "DIENSTAG",
+                    "start": "10:00",
+                    "end": "11:30",
+                    "title": "Einführung in die Wirtschaftsinformatik",
+                    "type": "UEBUNG",
+                    "room": "St-C018",
+                    "lecturer": "Bergmann",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            3,
+                            4
+                        ]
+                    }
+                },
+                {
+                    "day": "DIENSTAG",
+                    "start": "11:45",
+                    "end": "13:15",
+                    "title": "Einführung in die Wirtschaftsinformatik",
+                    "type": "UEBUNG",
+                    "room": "St-C018",
+                    "lecturer": "Bergmann",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            2,
+                            5
+                        ]
+                    }
+                },
+                {
+                    "day": "DIENSTAG",
+                    "start": "14:15",
+                    "end": "16:30",
+                    "title": "Programmierung 1",
+                    "type": "PRAKTIKUM",
+                    "room": "St-C175",
+                    "lecturer": "Balg",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            2,
+                            5
+                        ]
+                    }
+                },
+                {
+                    "day": "MITTWOCH",
+                    "start": "13:30",
+                    "end": "15:00",
+                    "title": "Mathematische Grundlagen und Lineare Algebra",
+                    "type": "UEBUNG",
+                    "room": "St-B062",
+                    "lecturer": "Weil",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            1
+                        ]
+                    },
+                    "note": "ab KW 41 (41–04)",
+                    "from": "2026-10-07"
+                },
+                {
+                    "day": "MITTWOCH",
+                    "start": "15:15",
+                    "end": "16:45",
+                    "title": "Mathematische Grundlagen und Lineare Algebra",
+                    "type": "VORLESUNG",
+                    "room": "St-HS8",
+                    "lecturer": "Weil",
+                    "groups": {
+                        "type": "all"
+                    }
+                },
+                {
+                    "day": "MITTWOCH",
+                    "start": "17:00",
+                    "end": "18:30",
+                    "title": "Mathematische Grundlagen und Lineare Algebra",
+                    "type": "UEBUNG",
+                    "room": "St-B060",
+                    "lecturer": "Lanzerath",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            5
+                        ]
+                    },
+                    "note": "ab KW 41 (41–04)",
+                    "from": "2026-10-07"
+                },
+                {
+                    "day": "DONNERSTAG",
+                    "start": "09:15",
+                    "end": "11:30",
+                    "title": "Programmierung 1",
+                    "type": "PRAKTIKUM",
+                    "room": "St-C175",
+                    "lecturer": "Balg",
+                    "groups": {
+                        "type": "numbers",
+                        "numbers": [
+                            3,
+                            4
+                        ]
+                    }
+                },
+                {
+                    "day": "DONNERSTAG",
+                    "start": "09:15",
+                    "end": "11:30",
+                    "title": "Business English for BIS",
+                    "type": "SEMINARISTISCHER_UNTERRICHT",
+                    "room": "St-C018",
+                    "lecturer": "Seibert-SPZ",
+                    "groups": {
+                        "type": "english",
+                        "letter": "C"
+                    }
+                },
+                {
+                    "day": "DONNERSTAG",
+                    "start": "09:15",
+                    "end": "11:30",
+                    "title": "Business English for BIS",
+                    "type": "SEMINARISTISCHER_UNTERRICHT",
+                    "room": "St-C118",
+                    "lecturer": "Werthwein-SPZ",
+                    "groups": {
+                        "type": "english",
+                        "letter": "B"
+                    }
+                },
+                {
+                    "day": "DONNERSTAG",
+                    "start": "09:15",
+                    "end": "11:30",
+                    "title": "Business English for BIS",
+                    "type": "SEMINARISTISCHER_UNTERRICHT",
+                    "room": "St-B060",
+                    "lecturer": "Müller-SPZ",
+                    "groups": {
+                        "type": "english",
+                        "letter": "A"
+                    }
+                },
+                {
+                    "day": "DONNERSTAG",
+                    "start": "11:45",
+                    "end": "13:15",
+                    "title": "Mathematische Grundlagen und Lineare Algebra",
+                    "type": "VORLESUNG",
+                    "room": "St-HS8",
+                    "lecturer": "Weil",
+                    "groups": {
+                        "type": "all"
+                    }
+                },
+                {
+                    "day": "DONNERSTAG",
+                    "start": "14:00",
+                    "end": "16:15",
+                    "title": "Business English for BIS",
+                    "type": "SEMINARISTISCHER_UNTERRICHT",
+                    "room": "St-C117",
+                    "lecturer": "Seibert-SPZ",
+                    "groups": {
+                        "type": "english",
+                        "letter": "D"
+                    }
+                },
+                {
+                    "day": "DONNERSTAG",
+                    "start": "14:00",
+                    "end": "16:15",
+                    "title": "Business English for BIS",
+                    "type": "SEMINARISTISCHER_UNTERRICHT",
+                    "room": "St-B060",
+                    "lecturer": "Müller-SPZ",
+                    "groups": {
+                        "type": "english",
+                        "letter": "E"
+                    }
+                },
+                {
+                    "day": "DONNERSTAG",
+                    "start": "14:00",
+                    "end": "16:15",
+                    "title": "Business English for BIS",
+                    "type": "SEMINARISTISCHER_UNTERRICHT",
+                    "room": "St-C018",
+                    "lecturer": "Lieder",
+                    "groups": {
+                        "type": "english",
+                        "letter": "F"
+                    }
+                },
+                {
+                    "day": "FREITAG",
+                    "start": "10:00",
+                    "end": "11:30",
+                    "title": "Einführung in die Betriebswirtschaftslehre",
+                    "type": "VORLESUNG",
+                    "room": "St-HS8",
+                    "lecturer": "Bonne",
+                    "groups": {
+                        "type": "all"
+                    }
+                },
+                {
+                    "day": "FREITAG",
+                    "start": "11:45",
+                    "end": "13:15",
+                    "title": "Einführung in die Betriebswirtschaftslehre",
+                    "type": "UEBUNG",
+                    "room": "St-HS8",
+                    "lecturer": "Bonne",
+                    "groups": {
+                        "type": "all"
+                    }
+                }
+            ]
+        }
+    ]
+}

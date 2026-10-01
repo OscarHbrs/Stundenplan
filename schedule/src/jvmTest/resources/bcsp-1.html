@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="de">
+
+
+<head>
+  <title>eva2 - Stundenplan für Semester BCSP 1 </title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="/static/bootstrap5/css/bootstrap.min.css" rel="stylesheet">
+  <style type="text/css">
+      body {padding-top:60px; padding-bottom:20px;}
+      a.eva-brand {padding-top:0 !important;}
+      hr.eva-bottom { margin-bottom:1px; }
+      div.eva-footer {text-align:center; color:#BBBBBB;}
+      div.eva-footer > span > a {color:#BBBBBB;}
+      div.eva-footer > span > a:hover {color:#333333; text-decoration:none;}
+      table {border: solid 1px black; border-collapse: collapse;}
+      td,th {border: solid 1px black;}
+      @media print {
+        .dontprint { display:none; }
+        body,h3 { padding:0; margin:0; }
+      }
+      a:link:after,a:visited:after { content:""; }
+      #logout-form { display: block; }
+      #logout-form button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+      }
+  </style>
+  
+<style type="text/css">
+@page {
+    size:auto;
+}
+table {
+    border-collapse: collapse;
+}
+td {
+    padding:0.1em;
+    border: 1px solid black;
+}
+td.object-cell-border {
+    background-color:#f2f9ff !important;
+    padding:0;
+    text-align:left;
+    vertical-align:top;
+}
+td.row-label-one {
+    font-weight:bold;
+}
+div.lvtitel {
+    background-color:#C0E0FF !important;
+    font-weight:bold;
+    padding:0.1em;
+}
+div.lvraumzeit {
+    background-color:#d4eaff !important;
+    border-top:black 1px dotted;
+    padding:0.1em;
+}
+div.lvdatum {
+    background-color:#e3f1ff !important;
+    border-top:black 1px dotted;
+    padding:0.1em;
+}
+div.lvwer {
+    background-color:#f2f9ff !important;
+    border-top:black 1px dotted;
+    padding:0.1em;
+}
+div.nobreak {
+    page-break-inside:avoid;
+}
+
+td.liste-wochentag, td.header {
+    background:#CCCCCC !important;
+    font-weight:bold;
+}
+td.liste-startzeit, td.liste-endzeit {
+    text-align:right;
+}
+td.ecke-links-oben {
+    border-top:none;
+    border-left:none;
+}
+tr.row0 {
+    background-color:#FFFFFF !important;
+}
+tr.row1 {
+    background-color:#EEEEEE !important;
+}
+tr.row0+tr.row1, tr.row1+tr.row0 {
+    border-top: solid black 3px;
+}
+td { line-height:normal !important; }
+@media print {
+  body,h3 { padding:0; margin:0; }
+}
+</style>
+
+</head>
+<body>
+  
+    <nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary dontprint">
+      <div class="container-fluid">
+        <a class="navbar-brand eva-brand" href="/"><img src="/static/images/eva2-logo-2017.png" width="48" height="22"/></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          
+  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <li class="nav-item"><a class="nav-link" href="/stundenplan/" >Stundenplan</a></li>
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+  Links
+</a>
+<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+<a class="dropdown-item" href="https://www.h-brs.de/de/its/services-fuer-studierende-its" target="_blank">Zentrale IT-Services für Studierende</a>
+<a class="dropdown-item" href="https://eva.inf.h-brs.de/zope/lv/" target="_blank">eva-Server</a>
+<a class="dropdown-item" href="https://eva2.inf.h-brs.de/ticker/" >Ticker</a>
+<a class="dropdown-item" href="https://eva.inf.h-brs.de/zope/kritik" target="_blank">Anonyme Kritik</a>
+<a class="dropdown-item" href="https://faq.inf.h-brs.de/" target="_blank">FAQ</a>
+<a class="dropdown-item" href="https://curriculum.inf.h-brs.de/" >Curriculum</a>
+<a class="dropdown-item" href="https://www.h-brs.de/inf" target="_blank">FB-Homepage</a>
+<a class="dropdown-item" href="https://www.h-brs.de/inf/fachschaft" target="_blank">Fachschaft Informatik</a>
+<a class="dropdown-item" href="https://www.h-brs.de/bibliothek" target="_blank">Bibliothek</a>
+
+</div>
+</li>
+
+  </ul>
+  <ul class="navbar-nav">
+    
+      <li class="nav-item">
+        
+          <a class="nav-link" href="/i18n/selectlang/stundenplan/anzeigen/%3Fweeks%3D40%253B41%253B42%253B43%253B44%253B45%253B46%253B47%253B48%253B49%253B50%253B51%253B54%253B55%253B56%26days%3D1-7%26mode%3Dtable%26identifier_semester%3D%2523SPLUS3D9E23%26show_semester%3D%26term%3Dc32ef58d2e1df421b3b48ef959d32758"><img src="/static/images/flag.png" alt="change language"></a>
+        
+      </li>
+    
+    
+      <li class="nav-item"><a class="nav-link" href="/login/?next=/stundenplan/anzeigen/%3Fweeks%3D40%253B41%253B42%253B43%253B44%253B45%253B46%253B47%253B48%253B49%253B50%253B51%253B54%253B55%253B56%26days%3D1-7%26mode%3Dtable%26identifier_semester%3D%2523SPLUS3D9E23%26show_semester%3D%26term%3Dc32ef58d2e1df421b3b48ef959d32758">Anmelden</a></li>
+    
+  </ul>
+
+        </div>
+      </div>
+    </nav>
+  
+  <div class="container">
+    <h3>Stundenplan für Semester BCSP 1</h3>
+    <noscript>
+      <div style="border:solid 2px;text-align:center;font-weight:bold;color:#FF0000;">
+        Javascript ist in Ihrem Browser deaktiviert. Bitte aktivieren Sie Javascript oder verwenden Sie einen Javascript-fähigen Browser, um dieses Webangebot zu nutzen.
+      </div>
+    </noscript>
+    
+    
+
+<b>Semester:</b> Wintersemester 2026/2027,
+
+<b>Kalenderwochen:</b> 40-51, 1-3,
+<b>Wochentage:</b> Montag-Sonntag,
+<b>Stand:</b> 2026-10-01 16:33:34<br/>
+
+  
+  Die Tabelle enthält keine Termine, die bereits in der Vergangenheit liegen.<br/>
+  
+  <br/>
+  <table>
+    <tr>
+      <td class="ecke-links-oben">&nbsp;</td>
+      <td class="header">von</td>
+      <td class="header">bis</td>
+      <td class="header">Raum</td>
+      <td class="header">Veranstaltung</td>
+      <td class="header">Zeitraum</td>
+      <td class="header">Wer</td>
+    </tr>
+    
+      
+        <tr>
+          
+            <td rowspan="4" class="liste-wochentag">Mo</td>
+          
+          <td class="liste-startzeit">8:15</td>
+          <td class="liste-endzeit">9:45</td>
+          <td class="liste-raum">St-C055, St-C115</td>
+          <td class="liste-veranstaltung">Netze Gr. 1+6 (ÜP)</td>
+          <td class="liste-beginn">28.09.2026-18.01.2027 (KW 40-04)</td>
+          <td class="liste-wer">Schneider M.</td>
+        </tr>
+      
+        <tr>
+          
+          <td class="liste-startzeit">8:15</td>
+          <td class="liste-endzeit">9:45</td>
+          <td class="liste-raum">St-B060</td>
+          <td class="liste-veranstaltung">Datenschutz, IT-Recht und Privatheit Gr. 2+5 (Ü)</td>
+          <td class="liste-beginn">28.09.2026-18.01.2027 (KW 40-04)</td>
+          <td class="liste-wer">Haferkorn</td>
+        </tr>
+      
+        <tr>
+          
+          <td class="liste-startzeit">10:00</td>
+          <td class="liste-endzeit">11:30</td>
+          <td class="liste-raum">St-HS3</td>
+          <td class="liste-veranstaltung">Algebraische Strukturen (V)</td>
+          <td class="liste-beginn">28.09.2026-18.01.2027 (KW 40-04)</td>
+          <td class="liste-wer">Müller</td>
+        </tr>
+      
+        <tr>
+          
+          <td class="liste-startzeit">11:45</td>
+          <td class="liste-endzeit">13:15</td>
+          <td class="liste-raum">St-B060</td>
+          <td class="liste-veranstaltung">Datenschutz, IT-Recht und Privatheit Gr. 3+4 (Ü)</td>
+          <td class="liste-beginn">28.09.2026-18.01.2027 (KW 40-04)</td>
+          <td class="liste-wer">Haferkorn</td>
+        </tr>
+      
+    
+      
+        <tr>
+          
+            <td rowspan="5" class="liste-wochentag">Di</td>
+          
+          <td class="liste-startzeit">10:00</td>
+          <td class="liste-endzeit">11:30</td>
+          <td class="liste-raum">St-HS8</td>
+          <td class="liste-veranstaltung">Programmierung 1 (V)</td>
+          <td class="liste-beginn">29.09.2026-19.01.2027 (KW 40-04)</td>
+          <td class="liste-wer">Kless</td>
+        </tr>
+      
+        <tr>
+          
+          <td class="liste-startzeit">11:45</td>
+          <td class="liste-endzeit">14:00</td>
+          <td class="liste-raum">St-C063</td>
+          <td class="liste-veranstaltung">Programmierung 1 Gr. 3+4 (Ü)</td>
+          <td class="liste-beginn">29.09.2026-19.01.2027 (KW 40-04)</td>
+          <td class="liste-wer">Kless</td>
+        </tr>
+      
+        <tr>
+          
+          <td class="liste-startzeit">13:30</td>
+          <td class="liste-endzeit">15:00</td>
+          <td class="liste-raum">St-C055, St-C117</td>
+          <td class="liste-veranstaltung">Netze Gr. 2+5 (ÜP)</td>
+          <td class="liste-beginn">29.09.2026-19.01.2027 (KW 40-04)</td>
+          <td class="liste-wer">Rademacher</td>
+        </tr>
+      
+        <tr>
+          
+          <td class="liste-startzeit">13:30</td>
+          <td class="liste-endzeit">15:00</td>
+          <td class="liste-raum">St-C118</td>
+          <td class="liste-veranstaltung">Datenschutz, IT-Recht und Privatheit Gr. 1+6 (Ü)</td>
+          <td class="liste-beginn">29.09.2026-19.01.2027 (KW 40-04)</td>
+          <td class="liste-wer">Haferkorn</td>
+        </tr>
+      
+        <tr>
+          
+          <td class="liste-startzeit">15:15</td>
+          <td class="liste-endzeit">16:45</td>
+          <td class="liste-raum">St-C116</td>
+          <td class="liste-veranstaltung">Datenschutz, IT-Recht und Privatheit (V)</td>
+          <td class="liste-beginn">29.09.2026-19.01.2027 (KW 40-04)</td>
+          <td class="liste-wer">Haferkorn</td>
+        </tr>
+      
+    
+      
+        <tr>
+          
+            <td rowspan="3" class="liste-wochentag">Mi</td>
+          
+          <td class="liste-startzeit">8:15</td>
+          <td class="liste-endzeit">9:45</td>
+          <td class="liste-raum">St-B060</td>
+          <td class="liste-veranstaltung">Algebraische Strukturen Gr. 3+4 (Ü)</td>
+          <td class="liste-beginn">30.09.2026-20.01.2027 (KW 40-04)</td>
+          <td class="liste-wer">Müller</td>
+        </tr>
+      
+        <tr>
+          
+          <td class="liste-startzeit">10:00</td>
+          <td class="liste-endzeit">11:30</td>
+          <td class="liste-raum">St-HS3</td>
+          <td class="liste-veranstaltung">Algebraische Strukturen (V)</td>
+          <td class="liste-beginn">30.09.2026-20.01.2027 (KW 40-04)</td>
+          <td class="liste-wer">Müller</td>
+        </tr>
+      
+        <tr>
+          
+          <td class="liste-startzeit">11:45</td>
+          <td class="liste-endzeit">13:15</td>
+          <td class="liste-raum">St-C115</td>
+          <td class="liste-veranstaltung">Netze Gr. 4 (ÜP)</td>
+          <td class="liste-beginn">30.09.2026-20.01.2027 (KW 40-04)</td>
+          <td class="liste-wer">Jansen</td>
+        </tr>
+      
+    
+      
+        <tr>
+          
+            <td rowspan="6" class="liste-wochentag">Do</td>
+          
+          <td class="liste-startzeit">8:15</td>
+          <td class="liste-endzeit">9:45</td>
+          <td class="liste-raum">St-HS1/2</td>
+          <td class="liste-veranstaltung">Netze (V)</td>
+          <td class="liste-beginn">01.10.2026-21.01.2027 (KW 40-04)</td>
+          <td class="liste-wer">Böhmer, J., Rademacher</td>
+        </tr>
+      
+        <tr>
+          
+          <td class="liste-startzeit">10:00</td>
+          <td class="liste-endzeit">11:30</td>
+          <td class="liste-raum">St-C055, St-C063</td>
+          <td class="liste-veranstaltung">Netze Gr. 3 (ÜP)</td>
+          <td class="liste-beginn">01.10.2026-21.01.2027 (KW 40-04)</td>
+          <td class="liste-wer">Böhmer, J.</td>
+        </tr>
+      
+        <tr>
+          
+          <td class="liste-startzeit">13:30</td>
+          <td class="liste-endzeit">15:00</td>
+          <td class="liste-raum">St-HS8</td>
+          <td class="liste-veranstaltung">Informationssicherheit (V)</td>
+          <td class="liste-beginn">01.10.2026-21.01.2027 (KW 40-04)</td>
+          <td class="liste-wer">Schiffner</td>
+        </tr>
+      
+        <tr>
+          
+          <td class="liste-startzeit">15:15</td>
+          <td class="liste-endzeit">16:45</td>
+          <td class="liste-raum">St-C119</td>
+          <td class="liste-veranstaltung">Informationssicherheit Gr. 1+6 (Ü)</td>
+          <td class="liste-beginn">01.10.2026-21.01.2027 (gKW 40-04)</td>
+          <td class="liste-wer">Schiffner</td>
+        </tr>
+      
+        <tr>
+          
+          <td class="liste-startzeit">15:15</td>
+          <td class="liste-endzeit">16:45</td>
+          <td class="liste-raum">St-C119</td>
+          <td class="liste-veranstaltung">Informationssicherheit Gr. 3+4 (Ü)</td>
+          <td class="liste-beginn">08.10.2026-14.01.2027 (uKW 41-03)</td>
+          <td class="liste-wer">Schiffner</td>
+        </tr>
+      
+        <tr>
+          
+          <td class="liste-startzeit">15:15</td>
+          <td class="liste-endzeit">16:45</td>
+          <td class="liste-raum">St-C063</td>
+          <td class="liste-veranstaltung">Informationssicherheit Gr. 2+5 (Ü)</td>
+          <td class="liste-beginn">08.10.2026-14.01.2027 (uKW 41-03)</td>
+          <td class="liste-wer">Fuchs</td>
+        </tr>
+      
+    
+      
+        <tr>
+          
+            <td rowspan="5" class="liste-wochentag">Fr</td>
+          
+          <td class="liste-startzeit">8:15</td>
+          <td class="liste-endzeit">9:45</td>
+          <td class="liste-raum">St-HS8</td>
+          <td class="liste-veranstaltung">Programmierung 1 (V)</td>
+          <td class="liste-beginn">02.10.2026-22.01.2027 (KW 40-04)</td>
+          <td class="liste-wer">Kless</td>
+        </tr>
+      
+        <tr>
+          
+          <td class="liste-startzeit">10:00</td>
+          <td class="liste-endzeit">11:30</td>
+          <td class="liste-raum">St-B062</td>
+          <td class="liste-veranstaltung">Algebraische Strukturen Gr. 2+5 (Ü)</td>
+          <td class="liste-beginn">02.10.2026-22.01.2027 (KW 40-04)</td>
+          <td class="liste-wer">Marcov</td>
+        </tr>
+      
+        <tr>
+          
+          <td class="liste-startzeit">10:00</td>
+          <td class="liste-endzeit">12:15</td>
+          <td class="liste-raum">St-C063, St-C181</td>
+          <td class="liste-veranstaltung">Programmierung 1 Gr. 1+6 (Ü)</td>
+          <td class="liste-beginn">02.10.2026-22.01.2027 (KW 40-04)</td>
+          <td class="liste-wer">Kless</td>
+        </tr>
+      
+        <tr>
+          
+          <td class="liste-startzeit">13:30</td>
+          <td class="liste-endzeit">15:00</td>
+          <td class="liste-raum">St-B062</td>
+          <td class="liste-veranstaltung">Algebraische Strukturen Gr. 1+6 (Ü)</td>
+          <td class="liste-beginn">02.10.2026-22.01.2027 (KW 40-04)</td>
+          <td class="liste-wer">Marcov</td>
+        </tr>
+      
+        <tr>
+          
+          <td class="liste-startzeit">13:30</td>
+          <td class="liste-endzeit">15:45</td>
+          <td class="liste-raum">St-C063</td>
+          <td class="liste-veranstaltung">Programmierung 1 Gr. 2+5 (Ü)</td>
+          <td class="liste-beginn">02.10.2026-22.01.2027 (KW 40-04)</td>
+          <td class="liste-wer">Kless</td>
+        </tr>
+      
+    
+  </table>
+
+
+<div class="kwlegende">(KW = Kalenderwoche, gKW = gerade Kalenderwochen, uKW = ungerade Kalenderwochen)</div>
+
+    
+
+  </div>
+  
+  <script src="/static/bootstrap5/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+</html>

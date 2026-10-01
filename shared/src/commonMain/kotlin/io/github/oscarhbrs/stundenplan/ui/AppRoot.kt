@@ -21,6 +21,7 @@ import io.github.oscarhbrs.stundenplan.data.MensaRepository
 import io.github.oscarhbrs.stundenplan.data.ScheduleRepository
 import io.github.oscarhbrs.stundenplan.data.SelectionStore
 import io.github.oscarhbrs.stundenplan.data.toggle
+import io.github.oscarhbrs.stundenplan.data.validIn
 import io.github.oscarhbrs.stundenplan.ui.theme.AppIcons
 
 private enum class AppTab(val label: String, val icon: ImageVector) {
@@ -35,6 +36,7 @@ fun AppRoot(store: SelectionStore, schedules: ScheduleRepository, mensa: MensaRe
     var schedule by remember { mutableStateOf(schedules.current()) }
     var currentTab by remember { mutableStateOf(AppTab.STUNDENPLAN) }
     var showGroupPicker by remember { mutableStateOf(selection.isEmpty()) }
+    val validSelection = selection.validIn(schedule)
 
     LaunchedEffect(Unit) {
         schedules.refresh()?.let { schedule = it }
@@ -62,7 +64,7 @@ fun AppRoot(store: SelectionStore, schedules: ScheduleRepository, mensa: MensaRe
             when (currentTab) {
                 AppTab.STUNDENPLAN -> ScheduleScreen(
                     schedule = schedule,
-                    selection = selection,
+                    selection = validSelection,
                     onOpenGroupPicker = { showGroupPicker = true }
                 )
                 AppTab.MENSA -> MensaScreen(repository = mensa)
@@ -73,9 +75,10 @@ fun AppRoot(store: SelectionStore, schedules: ScheduleRepository, mensa: MensaRe
 
     if (showGroupPicker) {
         GroupPickerSheet(
-            selected = selection,
+            schedule = schedule,
+            selected = validSelection,
             onToggle = { group ->
-                selection = selection.toggle(group)
+                selection = validSelection.toggle(group)
                 store.save(selection)
             },
             onDismiss = { showGroupPicker = false }

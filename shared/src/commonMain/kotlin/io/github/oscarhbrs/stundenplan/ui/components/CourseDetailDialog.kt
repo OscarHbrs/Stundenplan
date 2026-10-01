@@ -27,13 +27,12 @@ import io.github.oscarhbrs.stundenplan.schedule.Course
 import io.github.oscarhbrs.stundenplan.schedule.displayTitle
 import io.github.oscarhbrs.stundenplan.schedule.effectiveNote
 import io.github.oscarhbrs.stundenplan.ui.theme.AppIcons
-import io.github.oscarhbrs.stundenplan.ui.theme.SubjectColors
+import io.github.oscarhbrs.stundenplan.ui.theme.SubjectColor
 import io.github.oscarhbrs.stundenplan.ui.theme.TimeTextStyle
 
 @Composable
-fun CourseDetailDialog(course: Course, groupLabel: String?, onDismiss: () -> Unit) {
+fun CourseDetailDialog(course: Course, subjectColor: SubjectColor, groupLabel: String?, onDismiss: () -> Unit) {
     val isDark = isSystemInDarkTheme()
-    val subjectColor = SubjectColors.colorFor(course.title)
     val accent = if (isDark) subjectColor.dark else subjectColor.light
 
     Dialog(onDismissRequest = onDismiss) {

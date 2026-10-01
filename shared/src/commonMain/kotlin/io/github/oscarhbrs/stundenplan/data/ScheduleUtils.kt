@@ -63,8 +63,9 @@ fun scheduleFor(
     val dates = weekDates(monday)
     val merged = LinkedHashMap<Course, Pair<Course, MutableList<GroupSelection>>>()
     selections.sortedForDisplay().forEach { selection ->
-        schedule.coursesFor(selection.program)
-            .filter { it.groups.matches(selection.group) && schedule.term.hasCourseOn(it, dates.getValue(it.day)) }
+        val group = selection.group
+        schedule.program(selection.program)?.courses.orEmpty()
+            .filter { (group == null || it.groups.matches(group)) && schedule.term.hasCourseOn(it, dates.getValue(it.day)) }
             .forEach { course ->
                 val entry = merged.getOrPut(course.copy(groups = GroupSpec.All)) { course to mutableListOf() }
                 entry.second += selection
@@ -83,7 +84,11 @@ private fun groupLabel(course: Course, groups: List<GroupSelection>, selections:
     val byProgram = groups.groupBy { it.program }
     val singleProgram = selections.map { it.program }.distinct().size == 1
     return byProgram.entries.joinToString(" · ") { (program, attending) ->
-        val numbers = attending.joinToString("+") { it.group.toString() }
-        if (singleProgram) "Gr. $numbers" else "${program.displayName} $numbers"
+        val numbers = attending.mapNotNull { it.group }.joinToString("+")
+        when {
+            numbers.isEmpty() -> program
+            singleProgram -> "Gr. $numbers"
+            else -> "$program $numbers"
+        }
     }
 }

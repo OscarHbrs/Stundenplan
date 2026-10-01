@@ -36,14 +36,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.github.oscarhbrs.stundenplan.data.GROUP_NUMBERS
 import io.github.oscarhbrs.stundenplan.data.GroupSelection
 import io.github.oscarhbrs.stundenplan.schedule.Program
+import io.github.oscarhbrs.stundenplan.schedule.Schedule
 import io.github.oscarhbrs.stundenplan.ui.theme.AppIcons
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GroupPickerSheet(
+    schedule: Schedule,
     selected: List<GroupSelection>,
     onToggle: (GroupSelection) -> Unit,
     onDismiss: () -> Unit
@@ -67,14 +68,15 @@ fun GroupPickerSheet(
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
-                    text = "Wähle eine oder mehrere Gruppen, auch aus verschiedenen Studiengängen. Der Stundenplan zeigt alle Kurse dieser Gruppen.",
+                    text = "Wähle eine oder mehrere Gruppen, auch aus verschiedenen Studiengängen. Der Stundenplan zeigt alle Kurse dieser Gruppen." +
+                        if (schedule.programs.any { it.groups == 0 }) " Studiengänge ohne Gruppeneinteilung wählst du als Ganzes." else "",
                     fontSize = 13.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(top = 4.dp)
                 )
             }
 
-            items(Program.entries.toList()) { program ->
+            items(schedule.programs, key = { it.id }) { program ->
                 ProgramSection(
                     program = program,
                     selected = selected,
@@ -97,8 +99,9 @@ private fun ProgramSection(
     selected: List<GroupSelection>,
     onToggle: (GroupSelection) -> Unit
 ) {
-    val selectedCount = selected.count { it.program == program }
-    var expanded by remember(program) {
+    val selectedCount = selected.count { it.program == program.id }
+    val options = if (program.groups == 0) listOf(null) else (1..program.groups).toList()
+    var expanded by remember(program.id) {
         mutableStateOf(selected.isEmpty() || selectedCount > 0)
     }
 
@@ -119,16 +122,17 @@ private fun ProgramSection(
             ) {
                 Column {
                     Text(
-                        text = program.displayName,
+                        text = program.id,
                         fontWeight = FontWeight.Bold,
                         fontSize = 17.sp,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        text = when (selectedCount) {
-                            0 -> program.fullName
-                            1 -> "${program.fullName} · 1 Gruppe gewählt"
-                            else -> "${program.fullName} · $selectedCount Gruppen gewählt"
+                        text = when {
+                            selectedCount == 0 -> program.name
+                            program.groups == 0 -> "${program.name} · gewählt"
+                            selectedCount == 1 -> "${program.name} · 1 Gruppe gewählt"
+                            else -> "${program.name} · $selectedCount Gruppen gewählt"
                         },
                         fontSize = 12.sp,
                         color = if (selectedCount > 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
@@ -146,10 +150,10 @@ private fun ProgramSection(
                     modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    GROUP_NUMBERS.forEach { group ->
-                        val selection = GroupSelection(program, group)
+                    options.forEach { group ->
+                        val selection = GroupSelection(program.id, group)
                         GroupRow(
-                            group = group,
+                            label = group?.let { "Gruppe $it" } ?: "Alle Veranstaltungen",
                             isSelected = selection in selected,
                             onClick = { onToggle(selection) }
                         )
@@ -161,7 +165,7 @@ private fun ProgramSection(
 }
 
 @Composable
-private fun GroupRow(group: Int, isSelected: Boolean, onClick: () -> Unit) {
+private fun GroupRow(label: String, isSelected: Boolean, onClick: () -> Unit) {
     Surface(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
@@ -179,7 +183,7 @@ private fun GroupRow(group: Int, isSelected: Boolean, onClick: () -> Unit) {
             )
             Spacer(modifier = Modifier.size(12.dp))
             Text(
-                text = "Gruppe $group",
+                text = label,
                 fontSize = 14.sp,
                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
                 color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface

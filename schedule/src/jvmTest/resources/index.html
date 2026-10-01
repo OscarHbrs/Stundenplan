@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="de">
+
+
+<head>
+  <title>eva2 - Stundenplan </title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="/static/bootstrap5/css/bootstrap.min.css" rel="stylesheet">
+  <style type="text/css">
+      body {padding-top:60px; padding-bottom:20px;}
+      a.eva-brand {padding-top:0 !important;}
+      hr.eva-bottom { margin-bottom:1px; }
+      div.eva-footer {text-align:center; color:#BBBBBB;}
+      div.eva-footer > span > a {color:#BBBBBB;}
+      div.eva-footer > span > a:hover {color:#333333; text-decoration:none;}
+      table {border: solid 1px black; border-collapse: collapse;}
+      td,th {border: solid 1px black;}
+      @media print {
+        .dontprint { display:none; }
+        body,h3 { padding:0; margin:0; }
+      }
+      a:link:after,a:visited:after { content:""; }
+      #logout-form { display: block; }
+      #logout-form button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+      }
+  </style>
+  
+  <style type="text/css">
+    span.configlegende { color:#666666; font-size:80%; margin-left:1em;}
+    div.selectbox {float:left; width:21em; padding-right:1em;}
+    select { text-overflow:ellipsis; }
+    span.config { min-width:8em; }
+    div.config { max-width:30em; }
+    button.zeigen {margin-top:1em;}
+  </style>
+
+</head>
+<body>
+  
+    <nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary dontprint">
+      <div class="container-fluid">
+        <a class="navbar-brand eva-brand" href="/"><img src="/static/images/eva2-logo-2017.png" width="48" height="22"/></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          
+  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <li class="nav-item"><a class="nav-link" href="/stundenplan/" >Stundenplan</a></li>
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+  Links
+</a>
+<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+<a class="dropdown-item" href="https://www.h-brs.de/de/its/services-fuer-studierende-its" target="_blank">Zentrale IT-Services für Studierende</a>
+<a class="dropdown-item" href="https://eva.inf.h-brs.de/zope/lv/" target="_blank">eva-Server</a>
+<a class="dropdown-item" href="https://eva2.inf.h-brs.de/ticker/" >Ticker</a>
+<a class="dropdown-item" href="https://eva.inf.h-brs.de/zope/kritik" target="_blank">Anonyme Kritik</a>
+<a class="dropdown-item" href="https://faq.inf.h-brs.de/" target="_blank">FAQ</a>
+<a class="dropdown-item" href="https://curriculum.inf.h-brs.de/" >Curriculum</a>
+<a class="dropdown-item" href="https://www.h-brs.de/inf" target="_blank">FB-Homepage</a>
+<a class="dropdown-item" href="https://www.h-brs.de/inf/fachschaft" target="_blank">Fachschaft Informatik</a>
+<a class="dropdown-item" href="https://www.h-brs.de/bibliothek" target="_blank">Bibliothek</a>
+
+</div>
+</li>
+
+  </ul>
+  <ul class="navbar-nav">
+    
+      <li class="nav-item">
+        
+          <a class="nav-link" href="/i18n/selectlang/stundenplan/"><img src="/static/images/flag.png" alt="change language"></a>
+        
+      </li>
+    
+    
+      <li class="nav-item"><a class="nav-link" href="/login/?next=/stundenplan/">Anmelden</a></li>
+    
+  </ul>
+
+        </div>
+      </div>
+    </nav>
+  
+  <div class="container">
+    <h3>Stundenplan</h3>
+    <noscript>
+      <div style="border:solid 2px;text-align:center;font-weight:bold;color:#FF0000;">
+        Javascript ist in Ihrem Browser deaktiviert. Bitte aktivieren Sie Javascript oder verwenden Sie einen Javascript-fähigen Browser, um dieses Webangebot zu nutzen.
+      </div>
+    </noscript>
+    
+    
+
+<div><strong>Bitte beachten Sie, dass der Stundenplan jederzeit geändert werden kann, wenn es notwendig sein sollte.</strong></div>
+<div>Für Anmerkungen zur Stundenplanung wenden Sie sich bitte an FB02.lehrplanung@h-brs.de .</div>
+<br/>
+
+<form action="anzeigen/" method="GET" role="form">
+  <h4>Stundenplan-Konfiguration:</h4>
+  <div class="input-group mb-3 config">
+    <span class="input-group-text config">Wochen:</span>
+    <select class="form-select form-control" name="weeks" id="input_weeks">
+      <option value="40;41;42;43;44;45;46;47;48;49;50;51;54;55;56" selected>gesamtes Semester (KW 40-3)</option>
+      <option value="40;42;44;46;48;50;54;56">gerade Kalenderwochen (KW 40-3)</option>
+
+      <option value="41;43;45;47;49;51;55">ungerade Kalenderwochen (KW 41-2)</option>
+      
+        <option value="40">KW 40 (aktuelle Woche)</option>
+      
+        <option value="41">KW 41</option>
+      
+        <option value="42">KW 42</option>
+      
+        <option value="43">KW 43</option>
+      
+        <option value="44">KW 44</option>
+      
+        <option value="45">KW 45</option>
+      
+        <option value="46">KW 46</option>
+      
+        <option value="47">KW 47</option>
+      
+        <option value="48">KW 48</option>
+      
+        <option value="49">KW 49</option>
+      
+        <option value="50">KW 50</option>
+      
+        <option value="51">KW 51</option>
+      
+        <option value="54">KW 1</option>
+      
+        <option value="55">KW 2</option>
+      
+        <option value="56">KW 3</option>
+      
+    </select>
+  </div>
+  <div class="input-group mb-3 config">
+    <span class="input-group-text config">Wochentage:</span>
+    <select class="form-select form-control" name="days" id="input_days">
+      <option value="1-7" selected>Montag - Sonntag</option>
+      <option value="1-6">Montag - Samstag</option>
+      <option value="1-5">Montag - Freitag</option>
+      <option value="1">Montag</option>
+      <option value="2">Dienstag</option>
+      <option value="3">Mittwoch</option>
+      <option value="4">Donnerstag</option>
+      <option value="5">Freitag</option>
+      <option value="6">Samstag</option>
+      <option value="7">Sonntag</option>
+    </select>
+  </div>
+  <div class="input-group mb-3 config">
+    <span class="input-group-text config">Anzeige als:</span>
+    <select class="form-select form-control" name="mode" id="input_mode">
+      <option value="table">Tabelle</option>
+      <option value="grid">Zeitraster</option>
+      <option value="grid_weekdaysfiltered">Zeitraster (freie Tage ausgeblendet)</option>
+      <option value="xls">Excel: Tabelle</option>
+      <option value="grid_pdf">PDF: Zeitraster - Probebetrieb!</option>
+      <option value="grid_weekdaysfiltered_pdf">PDF: Zeitraster (freie Tage ausgeblendet) - Probebetrieb!</option>
+    </select>
+  </div>
+  <h4>Stundenplan-Auswahl:</h4>
+  <div class="selectbox">
+    <label for="identifier_semester" class="mb-1">Studiengang / Semester:</label>
+    <select class="form-select" id="identifier_semester" name="identifier_semester">
+      <option value="">*** bitte auswählen ***</option>
+      
+        <option value="#SPLUS3D9E23">BCSP 1</option>
+      
+        <option value="#SPLUSB45434">BCSP 3</option>
+      
+        <option value="#SPLUSE1E30B">BCSP 5</option>
+      
+        <option value="#SPLUS5A456B">BI 1</option>
+      
+        <option value="#SPLUS5C116B">BI 2</option>
+      
+        <option value="#SPLUSEBD352">BI 3</option>
+      
+        <option value="#SPLUS23BF5A">BI 3 (altes Curriculum)</option>
+      
+        <option value="#SPLUS4E1741">BI 5</option>
+      
+        <option value="#SPLUSF85D4A">BWI 1</option>
+      
+        <option value="#SPLUS5C116E">BWI 2</option>
+      
+        <option value="#SPLUSD09928">BWI 3</option>
+      
+        <option value="#SPLUS23BF5F">BWI 3 (altes Curriculum)</option>
+      
+        <option value="#SPLUS2B726C">BWI 5</option>
+      
+        <option value="MAS1">MAS 1</option>
+      
+        <option value="MAS2">MAS 2</option>
+      
+        <option value="MAS3">MAS 3</option>
+      
+        <option value="#SPLUS4E0F15">MAS 4</option>
+      
+        <option value="#SPLUSE1E30F">MCSP 1</option>
+      
+        <option value="#SPLUS5C1171">MCSP 2</option>
+      
+        <option value="#SPLUS5C1172">MCSP 3</option>
+      
+        <option value="#SPLUSBFCE99">MGT 1</option>
+      
+        <option value="#SPLUS23BF53">MGT 2</option>
+      
+        <option value="#SPLUS23BF54">MGT 3</option>
+      
+        <option value="MCS1">MI 1</option>
+      
+        <option value="MCS2">MI 2</option>
+      
+        <option value="MCS3">MI 3</option>
+      
+        <option value="#SPLUS23BF60">MWI 1</option>
+      
+        <option value="#SPLUS23BF61">MWI 2</option>
+      
+        <option value="#SPLUS23BF93">MWI 3</option>
+      
+        <option value="#SPLUS5C1BBC">Sprachkurse</option>
+      
+    </select>
+    <button class="btn btn-outline-dark w-100 mb-3 zeigen" type="submit" name="show_semester"
+    onclick="javascript:if(document.getElementById('identifier_semester').value=='')
+    {alert('Sie haben kein Semester ausgewählt!'); return false;}">
+      Stundenplan anzeigen</button>
+  </div>
+  <div class="selectbox">
+    <label for="identifier_dozent" class="mb-1">Dozent/in:</label>
+    <select class="form-select" id="identifier_dozent" name="identifier_dozent">
+      <option value="">*** bitte auswählen ***</option>
+      
+        <option value="#SPLUS3E6CAE">Alda</option>
+      
+        <option value="#SPLUSF61D2A">Asteroth</option>
+      
+        <option value="#SPLUS945CD7">Balg</option>
+      
+        <option value="#SPLUS3E12F9">Becker</option>
+      
+        <option value="#SPLUS0986F6">Bergmann</option>
+      
+        <option value="#SPLUS300011">Bertram</option>
+      
+        <option value="#SPLUS60DE3F">Böhmer, J.</option>
+      
+        <option value="#SPLUS42AE63">Böhmer, S.</option>
+      
+        <option value="#SPLUS469598">Bonne</option>
+      
+        <option value="#SPLUSD09926">Breuer</option>
+      
+        <option value="#SPLUS106466">Bürsner</option>
+      
+        <option value="#SPLUS5C1741">Cornely</option>
+      
+        <option value="#SPLUS0989F0">Dechand</option>
+      
+        <option value="#SPLUS5AF4AA">Dehio</option>
+      
+        <option value="#SPLUS662EBF">Dum</option>
+      
+        <option value="#SPLUS23C079">Eurich</option>
+      
+        <option value="#SPLUS8A2D68">Ewert</option>
+      
+        <option value="#SPLUS23C084">Fuchs</option>
+      
+        <option value="#SPLUSA61DF0">Ghofrani</option>
+      
+        <option value="#SPLUS23C05C">Goihl</option>
+      
+        <option value="#SPLUS8DB429">Hackelöer</option>
+      
+        <option value="#SPLUS9DD31A">Haferkorn</option>
+      
+        <option value="#SPLUS83D42E">Hassan</option>
+      
+        <option value="#SPLUSAEF56E">Hees</option>
+      
+        <option value="#SPLUS5C16E5">Heiden</option>
+      
+        <option value="#SPLUS23C085">Helbach</option>
+      
+        <option value="#SPLUS142940">Hense</option>
+      
+        <option value="#SPLUS9B486B">Herpers</option>
+      
+        <option value="#SPLUSE75A6E">Hinkenjann</option>
+      
+        <option value="#SPLUS0990D8">Hirsch</option>
+      
+        <option value="#SPLUSF3545C">Houben</option>
+      
+        <option value="#SPLUS7EF60C">Hülsmann</option>
+      
+        <option value="#SPLUS204AC8">Hünseler</option>
+      
+        <option value="#SPLUS23C08B">Jansen</option>
+      
+        <option value="#SPLUS8DB42A">Kaiser</option>
+      
+        <option value="#SPLUS435D45">Karam</option>
+      
+        <option value="#SPLUS4EC6A5">Kärcher-SPZ</option>
+      
+        <option value="#SPLUS098F76">Kazanci</option>
+      
+        <option value="#SPLUSD31714">Kees</option>
+      
+        <option value="#SPLUS88E7DF">Kirschner</option>
+      
+        <option value="#SPLUS9296D9">Kless</option>
+      
+        <option value="#SPLUS5C1742">Kraatz</option>
+      
+        <option value="#SPLUS5C16B3">Krickhahn</option>
+      
+        <option value="#SPLUSE6E62F">Kruijff</option>
+      
+        <option value="#SPLUSEC2966">Lanzerath</option>
+      
+        <option value="#SPLUS255443">Lemke-Rust</option>
+      
+        <option value="#SPLUS23C28E">Lieder</option>
+      
+        <option value="#SPLUS098654">Loh</option>
+      
+        <option value="#SPLUSE17123">Lo Iacono</option>
+      
+        <option value="#SPLUS8EE2D1">Mahbobi</option>
+      
+        <option value="#SPLUSA2FDD3">Marcov</option>
+      
+        <option value="#SPLUS23C094">Mersmann</option>
+      
+        <option value="#SPLUSFB9A7B">Müller</option>
+      
+        <option value="#SPLUS9D947C">Müller-SPZ</option>
+      
+        <option value="#SPLUS23C04F">Muntz</option>
+      
+        <option value="#SPLUS1664EA">Nimbach</option>
+      
+        <option value="#SPLUS29CFB6">Östreich</option>
+      
+        <option value="#SPLUS1BDFA6">Padilla</option>
+      
+        <option value="#SPLUS5C1BDB">Paust-SPZ</option>
+      
+        <option value="#SPLUS945CE1">Rademacher</option>
+      
+        <option value="#SPLUS810A98">Razzaq</option>
+      
+        <option value="#SPLUS9BCDF3">Ringhausen</option>
+      
+        <option value="#SPLUS5C1BE5">Rogozhnikova-SPZ</option>
+      
+        <option value="#SPLUS5C157E">Ruppel</option>
+      
+        <option value="#SPLUS09874C">Schauer</option>
+      
+        <option value="#SPLUS09852A">Schiffner</option>
+      
+        <option value="#SPLUS5C17B0">Schliefer</option>
+      
+        <option value="#SPLUSAEF569">Schneider M.</option>
+      
+        <option value="#SPLUS5C16B4">Scobel</option>
+      
+        <option value="#SPLUS8A46B9">Seibert-SPZ</option>
+      
+        <option value="#SPLUS945CEA">Seithe</option>
+      
+        <option value="#SPLUS5C16F6">Siebdrat</option>
+      
+        <option value="#SPLUSB7E2CF">Stiemerling</option>
+      
+        <option value="#SPLUS106469">Stuhm</option>
+      
+        <option value="#SPLUS5C17CD">Teichmann</option>
+      
+        <option value="#SPLUS217CD3">Thiele</option>
+      
+        <option value="#SPLUSA20064">Ullmann</option>
+      
+        <option value="#SPLUSBE8B34">Vieten</option>
+      
+        <option value="#SPLUS192FDF">Wamser</option>
+      
+        <option value="#SPLUSE7FA97">Weil</option>
+      
+        <option value="#SPLUS4912EC">Welle</option>
+      
+        <option value="#SPLUS9D947E">Werthwein-SPZ</option>
+      
+        <option value="#SPLUS5C1773">Wirtgen</option>
+      
+        <option value="#SPLUS81E03B">Wolpers</option>
+      
+        <option value="#SPLUS995E63">Youssef</option>
+      
+        <option value="#SPLUSE1E30A">Zacharias</option>
+      
+        <option value="#SPLUS54386E">Zarychta</option>
+      
+        <option value="#SPLUS435E49">Ziegler</option>
+      
+    </select>
+    <button class="btn btn-outline-dark w-100 mb-3 zeigen" type="submit" name="show_dozent"
+    onclick="javascript:if(document.getElementById('identifier_dozent').value=='')
+    {alert('Sie haben keine Dozentin bzw. keinen Dozenten ausgewählt!'); return false;}">
+      Stundenplan anzeigen
+    </button>
+  </div>
+  <div class="selectbox">
+    <label for="identifier_raum" class="mb-1">Raum:</label>
+    <select class="form-select" id="identifier_raum" name="identifier_raum">
+      <option value="">*** bitte auswählen ***</option>
+      
+        <option value="#SPLUS42B833">Hybrid: Online/Bad Godesberg</option>
+      
+        <option value="#SPLUSFA63A9">Online-1</option>
+      
+        <option value="#SPLUS42C2B9">Online-3</option>
+      
+        <option value="#SPLUS42C376">Online-4</option>
+      
+        <option value="#SPLUSCAAFB2">St-A032</option>
+      
+        <option value="#SPLUS8EF0B0">St-A033</option>
+      
+        <option value="#SPLUS8FF059">St-A102</option>
+      
+        <option value="#SPLUS475A6E">St-A114</option>
+      
+        <option value="#SPLUS951927">St-A121</option>
+      
+        <option value="#SPLUS7E6B01">St-A126</option>
+      
+        <option value="#SPLUS81FF26">St-B060</option>
+      
+        <option value="#SPLUS747CE8">St-B062</option>
+      
+        <option value="#SPLUS41738A">St-C013</option>
+      
+        <option value="470">St-C014</option>
+      
+        <option value="#SPLUS192FEA">St-C016</option>
+      
+        <option value="#SPLUS8CFE69">St-C017</option>
+      
+        <option value="#SPLUS2CB02A">St-C018</option>
+      
+        <option value="#SPLUS41738B">St-C019</option>
+      
+        <option value="#SPLUSF71B7E">St-C055</option>
+      
+        <option value="#SPLUSC805B2">St-C061</option>
+      
+        <option value="#SPLUS6D8857">St-C063</option>
+      
+        <option value="#SPLUS20F608">St-C070</option>
+      
+        <option value="#SPLUSF71B82">St-C115</option>
+      
+        <option value="#SPLUSD0C7F4">St-C116</option>
+      
+        <option value="#SPLUS81FF22">St-C117</option>
+      
+        <option value="#SPLUS81FF21">St-C118</option>
+      
+        <option value="#SPLUS6D8834">St-C119</option>
+      
+        <option value="#SPLUSD0C7F5">St-C120</option>
+      
+        <option value="#SPLUS192FE4">St-C125</option>
+      
+        <option value="#SPLUS81FF25">St-C130</option>
+      
+        <option value="#SPLUS192FE2">St-C175</option>
+      
+        <option value="#SPLUS81FF1F">St-C177</option>
+      
+        <option value="#SPLUS192FE1">St-C181</option>
+      
+        <option value="#SPLUSDA8EA2">St-C219</option>
+      
+        <option value="#SPLUSC61459">St-HS1/2</option>
+      
+        <option value="#SPLUS192FE3">St-HS3</option>
+      
+        <option value="#SPLUSADD5BF">St-HS8</option>
+      
+        <option value="#SPLUSB3DB36">St-Mensa</option>
+      
+    </select>
+    <button class="btn btn-outline-dark w-100 mb-3 zeigen" type="submit" name="show_raum"
+    onclick="javascript:if(document.getElementById('identifier_raum').value=='')
+    {alert('Sie haben keinen Raum ausgewählt!'); return false;}">
+      Stundenplan anzeigen
+    </button>
+  </div>
+  <br style="clear:left;"/>
+  <input type="hidden" name="term" value="c32ef58d2e1df421b3b48ef959d32758">
+</form>
+<div>
+  <span class="configlegende">
+    Verwendete Abkürzungen:
+    <ul>
+      <li>BCSP = <b>B</b>achelor <b>C</b>yber <b>S</b>ecurity &amp; <b>P</b>rivacy</li>
+      <li>BI = <b>B</b>achelor <b>I</b>nformatik</li>
+      <li>BWI = <b>B</b>achelor <b>W</b>irtschafts<b>i</b>nformatik</li>
+      <li>KW = <b>K</b>alender<b>w</b>oche (Calendar Week)</li>
+      <li>MAS = <b>M</b>aster <b>A</b>utonomous <b>S</b>ystems</li>
+      <li>MCSP = <b>M</b>aster <b>C</b>yber <b>S</b>ecurity &amp; <b>P</b>rivacy</li>
+      <li>MGT = <b>M</b>aster <b>G</b>ame <b>T</b>echnologies</li>
+      <li>MI = <b>M</b>aster <b>I</b>nformatik</li>
+      <li>MKSN = <b>M</b>aster <b>C</b>ommunication <b>S</b>ystems and <b>N</b>etworks</li>
+      <li>MVG = <b>M</b>aster <b>V</b>isual Computing &amp; <b>G</b>ames Technology</li>
+      <li>PO = <b>P</b>rüfungs<b>o</b>rdnung in der angegebenen Version (2017 oder 2021): Zurzeit wird für einige Studiengänge schrittweise das neue Curriculum der Prüfungsordnung 2024 eingeführt. Für Studierende, die in die vorherige Prüfungsordnung eingeschrieben sind, gilt aber weiterhin das darin vorgesehene Curriculum. Die betreffenden Stundenpläne sind durch den Zusatz &quot;PO 2017&quot; bzw. &quot;PO 2021&quot; gekennzeichnet.</li>
+    </ul>
+  </span>
+</div>
+Die offiziellen Stundenpläne des Fachbereichs Informatik werden ausschließlich auf dieser Seite veröffentlicht.
+
+    
+    <hr class="eva-bottom" />
+    <div class="eva-footer">
+      &copy; Hochschule Bonn-Rhein-Sieg, Fachbereich Informatik
+      <span class="dontprint">-
+        <a href="/impressum/">Impressum</a>
+      </span>
+      <span class="dontprint">-
+        <a href="/datenschutz/">Datenschutz</a>
+      </span>
+    </div>
+    
+  </div>
+  
+  <script src="/static/bootstrap5/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+</html>

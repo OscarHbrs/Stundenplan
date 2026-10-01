@@ -1,6 +1,7 @@
 # Builds the web version (PWA) and publishes it on GitHub Pages, together with the current
-# Mensa menu as mensa.json (the browser may not load the Studierendenwerk website directly)
-# and the timetable as schedule.json (loaded by the Android app, so it needs no update for changes).
+# Mensa menu as mensa.json and the timetables from eva2 as schedules.json (the browser may not
+# load those websites directly; the apps load these files instead). schedule.json keeps the old
+# format for Android apps up to v1.4.0.
 # One-time setup: Settings → Pages → Source: "GitHub Actions".
 name: Web-App deployen
 
@@ -38,11 +39,29 @@ jobs:
       - id: pages
         uses: actions/configure-pages@v6
 
+      # Updates the built-in timetable (schedule/schedules.json) before the web app is built.
+      - name: Stundenplan von eva2 laden
+        id: schedule
+        continue-on-error: true
+        run: ./gradlew :schedule:jvmRun --args="$PWD/schedule/schedules.json $RUNNER_TEMP/schedule.json"
+
       - name: Web-App bauen
         run: ./gradlew :webApp:wasmJsBrowserDistribution
 
-      - name: Stundenplan exportieren
-        run: ./gradlew :schedule:jvmRun --args="$PWD/webApp/build/dist/wasmJs/productionExecutable/schedule.json"
+      # If eva2 changed and the export failed, keep the previously published timetables.
+      - name: Stundenplan veröffentlichen
+        env:
+          OUT: webApp/build/dist/wasmJs/productionExecutable
+        run: |
+          if [ "${{ steps.schedule.outcome }}" = "success" ]; then
+            cp schedule/schedules.json "$OUT/schedules.json"
+            cp "$RUNNER_TEMP/schedule.json" "$OUT/schedule.json"
+          else
+            echo "::warning::Stundenplan-Export fehlgeschlagen, verwende bisherige schedules.json/schedule.json."
+            curl -fsS "${{ steps.pages.outputs.base_url }}/schedules.json" -o "$OUT/schedules.json" \
+              || cp schedule/schedules.json "$OUT/schedules.json"
+            curl -fsS "${{ steps.pages.outputs.base_url }}/schedule.json" -o "$OUT/schedule.json" || true
+          fi
 
       # If the website changed and the export fails, keep the previously published menu.
       - name: Mensa-Speiseplan exportieren

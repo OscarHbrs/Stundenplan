@@ -1,37 +1,39 @@
 package io.github.oscarhbrs.stundenplan.data
 
 import io.github.oscarhbrs.stundenplan.schedule.Schedule
-import io.github.oscarhbrs.stundenplan.schedule.ScheduleData
 import io.github.oscarhbrs.stundenplan.schedule.ScheduleJson
+import io.github.oscarhbrs.stundenplan.schedule.builtInSchedule
 import kotlinx.coroutines.CancellationException
 
-private const val KEY_SCHEDULE = "schedule"
+private const val KEY_SCHEDULE = "schedules"
 
 /**
- * The timetable built into the app, or a newer one loaded via [fetchJson] (the `schedule.json` published
- * with the web app), so changes reach installed apps without an update. Without [fetchJson], only the
- * built-in timetable is used.
+ * The timetable built into the app, or a newer one from eva2 loaded via [fetchJson] (the `schedules.json`
+ * the deploy workflow publishes with the web app), so changes arrive without an app update.
  */
 class ScheduleRepository(
     private val storage: KeyValueStorage,
-    private val fetchJson: (suspend () -> String)? = null
+    private val builtIn: Schedule = builtInSchedule,
+    private val fetchJson: suspend () -> String
 ) {
-    fun current(): Schedule = if (fetchJson == null) ScheduleData.schedule else cached() ?: ScheduleData.schedule
+    fun current(): Schedule = cached()?.takeIf(::isCurrent) ?: builtIn
 
     /** Returns the downloaded timetable, or `null` if it could not be loaded. */
     suspend fun refresh(): Schedule? {
-        val fetch = fetchJson ?: return null
         val json = try {
-            fetch()
+            fetchJson()
         } catch (e: CancellationException) {
             throw e
         } catch (e: Throwable) {
             return null
         }
-        val schedule = decode(json) ?: return null
+        val schedule = decode(json)?.takeIf(::isCurrent) ?: return null
         storage.putString(KEY_SCHEDULE, json)
         return schedule
     }
+
+    // After an app update with a new term, a timetable stored for the previous term is outdated.
+    private fun isCurrent(schedule: Schedule): Boolean = schedule.term.start >= builtIn.term.start
 
     private fun cached(): Schedule? = storage.getString(KEY_SCHEDULE)?.let(::decode)
 

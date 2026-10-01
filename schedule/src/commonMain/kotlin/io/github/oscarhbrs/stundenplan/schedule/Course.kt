@@ -5,19 +5,17 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-enum class Program(val displayName: String, val fullName: String) {
-    BCSP("BCSP", "Cyber Security"),
-    BI("BI", "Informatik"),
-    BWI("BWI", "Wirtschaftsinformatik")
-}
-
-@Serializable
 enum class CourseType(val shortLabel: String, val fullLabel: String) {
     VORLESUNG("V", "Vorlesung"),
     UEBUNG("Ü", "Übung"),
     UEBUNG_PRAKTIKUM("ÜP", "Übung im Pool/Praktikum"),
     PRAKTIKUM("P", "Praktikum"),
-    SEMINARISTISCHER_UNTERRICHT("SU", "Seminaristischer Unterricht")
+    SEMINARISTISCHER_UNTERRICHT("SU", "Seminaristischer Unterricht"),
+    VORLESUNG_UEBUNG("VÜ", "Vorlesung mit Übung"),
+    VORLESUNG_UEBUNG_PRAKTIKUM("VÜP", "Vorlesung, Übung und Praktikum"),
+    SEMINAR("S", "Seminar"),
+    PROJEKT("Projekt", "Projekt"),
+    SONSTIGE("?", "Sonstige")
 }
 
 @Serializable
@@ -37,6 +35,10 @@ sealed class GroupSpec {
     @Serializable
     @SerialName("allWithNote")
     data object AllWithNote : GroupSpec()
+
+    @Serializable
+    @SerialName("letter")
+    data class Letter(val letter: String) : GroupSpec()
 }
 
 fun GroupSpec.matches(group: Int): Boolean = when (this) {
@@ -44,6 +46,7 @@ fun GroupSpec.matches(group: Int): Boolean = when (this) {
     is GroupSpec.Numbers -> group in numbers
     GroupSpec.AllWithNote -> true
     is GroupSpec.EnglishGroup -> true
+    is GroupSpec.Letter -> true
 }
 
 fun GroupSpec.displayLabel(): String? = when (this) {
@@ -51,9 +54,10 @@ fun GroupSpec.displayLabel(): String? = when (this) {
     is GroupSpec.Numbers -> "Gr. " + numbers.joinToString("+")
     GroupSpec.AllWithNote -> null
     is GroupSpec.EnglishGroup -> "Gr. $letter"
+    is GroupSpec.Letter -> "Gr. $letter"
 }
 
-/** Calendar weeks (ISO) a course takes place in. */
+/** Every week, or every other week counted from the start of the term (see [Term.weekNumber]). */
 @Serializable
 enum class WeekParity { ALL, EVEN, ODD }
 
@@ -69,12 +73,14 @@ data class Course(
     val groups: GroupSpec,
     val note: String? = null,
     val weeks: WeekParity = WeekParity.ALL,
-    val from: LocalDate? = null
+    val from: LocalDate? = null,
+    val until: LocalDate? = null
 )
 
-fun Course.displayTitle(): String {
-    val g = groups
-    return if (g is GroupSpec.EnglishGroup) "$title (Gr. ${g.letter})" else title
+fun Course.displayTitle(): String = when (val g = groups) {
+    is GroupSpec.EnglishGroup -> "$title (Gr. ${g.letter})"
+    is GroupSpec.Letter -> "$title (Gr. ${g.letter})"
+    else -> title
 }
 
 fun Course.effectiveNote(): String? = when (groups) {

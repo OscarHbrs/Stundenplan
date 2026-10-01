@@ -46,13 +46,14 @@ import io.github.oscarhbrs.stundenplan.schedule.displayTitle
 import io.github.oscarhbrs.stundenplan.schedule.effectiveNote
 import io.github.oscarhbrs.stundenplan.ui.theme.AppIcons
 import io.github.oscarhbrs.stundenplan.ui.theme.CurrentTimeLineColor
+import io.github.oscarhbrs.stundenplan.ui.theme.SubjectColor
 import io.github.oscarhbrs.stundenplan.ui.theme.SubjectColors
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 
 private const val GRID_START_HOUR = 8
-private const val GRID_END_HOUR = 19
+private const val MIN_GRID_END_HOUR = 19
 private val DP_PER_MINUTE = 1.05.dp
 private val TIME_AXIS_WIDTH = 38.dp
 
@@ -64,13 +65,18 @@ private val GERMAN_MONTHS_SHORT = listOf(
 @Composable
 fun GridScheduleView(
     schedule: Map<Weekday, List<ScheduledCourse>>,
+    colors: Map<String, SubjectColor>,
     monday: LocalDate,
     now: LocalDateTime,
     modifier: Modifier = Modifier
 ) {
     val dates = remember(monday) { weekDates(monday) }
     val today = currentWeekday(now.date)
-    val totalMinutes = (GRID_END_HOUR - GRID_START_HOUR) * 60
+    val endHour = remember(schedule) {
+        val latestEnd = schedule.values.flatten().maxOfOrNull { it.course.endTime() }
+        maxOf(MIN_GRID_END_HOUR, latestEnd?.let { if (it.minute > 0) it.hour + 1 else it.hour } ?: 0).coerceAtMost(23)
+    }
+    val totalMinutes = (endHour - GRID_START_HOUR) * 60
     val totalHeight = DP_PER_MINUTE * totalMinutes
 
     Column(modifier = modifier.fillMaxWidth()) {
@@ -78,13 +84,14 @@ fun GridScheduleView(
         Spacer(modifier = Modifier.size(4.dp))
 
         Row(modifier = Modifier.fillMaxWidth().height(totalHeight)) {
-            TimeAxis(totalHeight = totalHeight)
+            TimeAxis(endHour = endHour, totalHeight = totalHeight)
             Box(modifier = Modifier.weight(1f).fillMaxHeight()) {
-                HourGridLines(totalHeight = totalHeight)
+                HourGridLines(endHour = endHour, totalHeight = totalHeight)
                 Row(modifier = Modifier.fillMaxSize()) {
                     orderedWeekdays.forEachIndexed { index, weekday ->
                         DayColumn(
                             courses = schedule[weekday].orEmpty(),
+                            colors = colors,
                             modifier = Modifier.weight(1f).fillMaxHeight()
                         )
                         if (index != orderedWeekdays.lastIndex) {
@@ -102,6 +109,7 @@ fun GridScheduleView(
                         now = now.time,
                         today = today,
                         visibleDays = orderedWeekdays,
+                        endHour = endHour,
                         totalHeight = totalHeight
                     )
                 }
@@ -150,9 +158,9 @@ private fun WeekHeaderRow(dates: Map<Weekday, LocalDate>, today: Weekday?) {
 }
 
 @Composable
-private fun HourGridLines(totalHeight: Dp) {
+private fun HourGridLines(endHour: Int, totalHeight: Dp) {
     Box(modifier = Modifier.fillMaxWidth().height(totalHeight)) {
-        for (hour in GRID_START_HOUR..GRID_END_HOUR) {
+        for (hour in GRID_START_HOUR..endHour) {
             val offset = DP_PER_MINUTE * ((hour - GRID_START_HOUR) * 60)
             Box(
                 modifier = Modifier
@@ -166,9 +174,9 @@ private fun HourGridLines(totalHeight: Dp) {
 }
 
 @Composable
-private fun TimeAxis(totalHeight: Dp) {
+private fun TimeAxis(endHour: Int, totalHeight: Dp) {
     Box(modifier = Modifier.width(TIME_AXIS_WIDTH).height(totalHeight)) {
-        for (hour in GRID_START_HOUR..GRID_END_HOUR) {
+        for (hour in GRID_START_HOUR..endHour) {
             val offset = DP_PER_MINUTE * ((hour - GRID_START_HOUR) * 60)
             Text(
                 text = "${hour.toString().padStart(2, '0')}:00",
@@ -183,7 +191,7 @@ private fun TimeAxis(totalHeight: Dp) {
 }
 
 @Composable
-private fun DayColumn(courses: List<ScheduledCourse>, modifier: Modifier = Modifier) {
+private fun DayColumn(courses: List<ScheduledCourse>, colors: Map<String, SubjectColor>, modifier: Modifier = Modifier) {
     BoxWithConstraints(modifier = modifier) {
         val columnWidth = maxWidth
         val laidOut = remember(courses) { layoutOverlaps(courses) }
@@ -198,6 +206,7 @@ private fun DayColumn(courses: List<ScheduledCourse>, modifier: Modifier = Modif
 
             CourseBlock(
                 scheduled = scheduled,
+                subjectColor = colors[SubjectColors.subjectOf(course.title)] ?: SubjectColors.fallback,
                 modifier = Modifier
                     .padding(top = topOffset)
                     .offset(x = laneStart)
@@ -252,10 +261,9 @@ private fun layoutOverlaps(courses: List<ScheduledCourse>): List<Triple<Schedule
 }
 
 @Composable
-private fun CourseBlock(scheduled: ScheduledCourse, modifier: Modifier = Modifier) {
+private fun CourseBlock(scheduled: ScheduledCourse, subjectColor: SubjectColor, modifier: Modifier = Modifier) {
     val course = scheduled.course
     val isDark = isSystemInDarkTheme()
-    val subjectColor = SubjectColors.colorFor(course.title)
     val accent = if (isDark) subjectColor.dark else subjectColor.light
     val backgroundTint = accent.copy(alpha = if (isDark) 0.22f else 0.14f)
     var showDetails by remember { mutableStateOf(false) }
@@ -338,7 +346,7 @@ private fun CourseBlock(scheduled: ScheduledCourse, modifier: Modifier = Modifie
     }
 
     if (showDetails) {
-        CourseDetailDialog(course = course, groupLabel = scheduled.groupLabel, onDismiss = { showDetails = false })
+        CourseDetailDialog(course = course, subjectColor = subjectColor, groupLabel = scheduled.groupLabel, onDismiss = { showDetails = false })
     }
 }
 
@@ -347,13 +355,14 @@ private fun CurrentTimeLine(
     now: LocalTime,
     today: Weekday,
     visibleDays: List<Weekday>,
+    endHour: Int,
     totalHeight: Dp
 ) {
     val gridStart = LocalTime(GRID_START_HOUR, 0)
-    val gridEnd = LocalTime(GRID_END_HOUR, 0)
+    val gridEnd = LocalTime(endHour, 0)
     if (now < gridStart || now > gridEnd) return
 
-    val totalMinutes = (GRID_END_HOUR - GRID_START_HOUR) * 60
+    val totalMinutes = (endHour - GRID_START_HOUR) * 60
     val nowMinutes = (now.hour - GRID_START_HOUR) * 60 + now.minute
     val fraction = nowMinutes.toFloat() / totalMinutes.toFloat()
     val todayIndex = visibleDays.indexOf(today).takeIf { it >= 0 }

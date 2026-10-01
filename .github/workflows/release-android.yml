@@ -33,6 +33,12 @@ jobs:
           fi
           echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/release.jks"
 
+      # Builds the current timetable from eva2 into the APK; if that fails, the one in the repository is used.
+      - name: Stundenplan von eva2 laden
+        run: |
+          ./gradlew :schedule:jvmRun --args="$PWD/schedule/schedules.json" \
+            || echo "::warning::Stundenplan-Export fehlgeschlagen, verwende schedule/schedules.json aus dem Repository."
+
       - name: APK bauen
         env:
           ANDROID_KEYSTORE_FILE: ${{ runner.temp }}/release.jks

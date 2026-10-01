@@ -36,11 +36,13 @@ import io.github.oscarhbrs.stundenplan.data.displayedMonday
 import io.github.oscarhbrs.stundenplan.data.nowLocal
 import io.github.oscarhbrs.stundenplan.data.scheduleFor
 import io.github.oscarhbrs.stundenplan.data.summary
+import io.github.oscarhbrs.stundenplan.schedule.CourseType
 import io.github.oscarhbrs.stundenplan.schedule.Schedule
 import io.github.oscarhbrs.stundenplan.schedule.Term
 import io.github.oscarhbrs.stundenplan.ui.components.GridScheduleView
 import io.github.oscarhbrs.stundenplan.ui.components.LegendCard
 import io.github.oscarhbrs.stundenplan.ui.theme.AppIcons
+import io.github.oscarhbrs.stundenplan.ui.theme.SubjectColors
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -96,6 +98,11 @@ fun ScheduleScreen(
         } else {
             val monday = displayedMonday(now.date)
             val week = remember(schedule, selection, monday) { scheduleFor(schedule, selection, monday) }
+            val courses = remember(schedule, selection) {
+                selection.map { it.program }.distinct().flatMap { schedule.program(it)?.courses.orEmpty() }
+            }
+            val colors = remember(courses) { SubjectColors.assign(courses.map { it.title }) }
+            val types = remember(courses) { CourseType.entries.filter { type -> courses.any { it.type == type } } }
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -113,7 +120,7 @@ fun ScheduleScreen(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
-                GridScheduleView(schedule = week, monday = monday, now = now)
+                GridScheduleView(schedule = week, colors = colors, monday = monday, now = now)
                 Spacer(modifier = Modifier.size(9.dp))
                 Text(
                     text = "Vorlesungszeit: ${schedule.term.label()}",
@@ -123,7 +130,7 @@ fun ScheduleScreen(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Spacer(modifier = Modifier.size(16.dp))
-                LegendCard()
+                LegendCard(subjects = colors, types = types)
                 Spacer(modifier = Modifier.size(16.dp))
             }
         }

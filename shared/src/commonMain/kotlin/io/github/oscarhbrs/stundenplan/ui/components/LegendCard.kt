@@ -23,10 +23,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.oscarhbrs.stundenplan.schedule.CourseType
-import io.github.oscarhbrs.stundenplan.ui.theme.SubjectColors
+import io.github.oscarhbrs.stundenplan.ui.theme.SubjectColor
 
 @Composable
-fun LegendCard(modifier: Modifier = Modifier) {
+fun LegendCard(subjects: Map<String, SubjectColor>, types: List<CourseType>, modifier: Modifier = Modifier) {
     val isDark = isSystemInDarkTheme()
 
     Card(
@@ -46,7 +46,7 @@ fun LegendCard(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.size(10.dp))
 
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                SubjectColors.legendEntries.forEach { (title, color) ->
+                subjects.forEach { (title, color) ->
                     val accent = if (isDark) color.dark else color.light
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Surface(
@@ -69,7 +69,7 @@ fun LegendCard(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.size(10.dp))
 
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                CourseType.entries.chunked(3).forEach { row ->
+                types.chunked(3).forEach { row ->
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceEvenly

@@ -16,7 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 // Published with the web app, see deploy-web.yml.
-private const val SCHEDULE_URL = "https://oscarhbrs.github.io/Stundenplan/schedule.json"
+private const val SCHEDULE_URL = "https://oscarhbrs.github.io/Stundenplan/schedules.json"
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,7 +1,5 @@
 package io.github.oscarhbrs.stundenplan.data
 
-import io.github.oscarhbrs.stundenplan.schedule.Program
-
 private const val KEY_GROUPS = "selected_groups"
 private const val KEY_LEGACY_PROGRAM = "selected_program"
 private const val KEY_LEGACY_GROUP = "selected_group"
@@ -14,26 +12,28 @@ interface KeyValueStorage {
     fun putInt(key: String, value: Int)
 }
 
-/** Stores the selected groups as e.g. "BCSP:1,BI:3". */
+/** Stores the selected groups as e.g. "BCSP:1,BI:3,MI" (a program without groups has no number). */
 class SelectionStore(private val storage: KeyValueStorage) {
 
     fun load(): List<GroupSelection> {
         val stored = storage.getString(KEY_GROUPS) ?: return loadLegacy()
-        return stored.split(',').mapNotNull { entry ->
-            val program = runCatching { Program.valueOf(entry.substringBefore(':')) }.getOrNull()
-            val group = entry.substringAfter(':', "").toIntOrNull()
-            if (program != null && group != null && group in GROUP_NUMBERS) GroupSelection(program, group) else null
+        return stored.split(',').filter { it.isNotBlank() }.mapNotNull { entry ->
+            val program = entry.substringBefore(':')
+            if (':' !in entry) return@mapNotNull GroupSelection(program, null)
+            entry.substringAfter(':').toIntOrNull()?.let { GroupSelection(program, it) }
         }.sortedForDisplay()
     }
 
     fun save(selections: List<GroupSelection>) {
-        storage.putString(KEY_GROUPS, selections.joinToString(",") { "${it.program.name}:${it.group}" })
+        storage.putString(
+            KEY_GROUPS,
+            selections.joinToString(",") { selection -> selection.group?.let { "${selection.program}:$it" } ?: selection.program }
+        )
     }
 
     private fun loadLegacy(): List<GroupSelection> {
-        val program = storage.getString(KEY_LEGACY_PROGRAM)
-            ?.let { runCatching { Program.valueOf(it) }.getOrNull() } ?: return emptyList()
-        val group = storage.getInt(KEY_LEGACY_GROUP)?.takeIf { it in GROUP_NUMBERS } ?: return emptyList()
+        val program = storage.getString(KEY_LEGACY_PROGRAM) ?: return emptyList()
+        val group = storage.getInt(KEY_LEGACY_GROUP) ?: return emptyList()
         return listOf(GroupSelection(program, group))
     }
 }

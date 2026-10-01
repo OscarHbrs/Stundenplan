@@ -24,17 +24,22 @@ Kotlin Multiplatform + Compose Multiplatform – die Oberfläche wird einmal ges
 | `shared/`    | Gesamte App: Logik (`data/`) und Oberfläche (`ui/`)                     |
 | `androidApp/`| Android-Einstieg (`MainActivity`) und Speicherung per SharedPreferences |
 | `webApp/`    | Web-Einstieg (Kotlin/Wasm), `index.html`, PWA-Manifest, Service Worker  |
-| `schedule/`  | Stundenplandaten, Wochenregeln und JSON-Export (`jvmMain`)              |
+| `schedule/`  | Stundenplan: eva2-Parser, Wochenregeln, JSON-Export (`jvmMain`)         |
 | `mensa/`     | Mensa-Speiseplan: Datenmodell, HTML-Parser und JSON-Export (`jvmMain`)  |
 
-Stundenplan ändern: `schedule/src/commonMain/kotlin/io/github/oscarhbrs/stundenplan/schedule/ScheduleData.kt`.
-Dort stehen auch die Vorlesungszeit (`Term`, inkl. vorlesungsfreier Tage in `breaks`) und pro Termin die
-Wochenregeln (`weeks = WeekParity.EVEN/ODD`, `from = …`). Die App zeigt nur Termine, die in der angezeigten
-Woche wirklich stattfinden.
+Die Stundenpläne kommen von [eva2](https://eva2.inf.h-brs.de/stundenplan/), der offiziellen Seite des
+Fachbereichs Informatik. Übernommen werden die Bachelor-Studiengänge im 1. Semester
+(`Eva2Scraper.isBachelorFirstSemester`). Vorlesungszeit, vorlesungsfreie Wochen, Gruppen und Wochenregeln
+(gerade/ungerade KW, Start- und Endwoche) liest der Parser ebenfalls von dort.
 
-Nach dem Push veröffentlicht `deploy-web.yml` den Plan zusätzlich als `schedule.json`. Die Android-App lädt
-diese Datei beim Start, Änderungen kommen also ohne neue APK an. `./gradlew :schedule:jvmTest` prüft die
-Wochenregeln.
+- **Eingebaut:** `schedule/schedules.json` wird beim Bauen in die Apps übernommen, damit der Plan sofort und
+  offline da ist. Aktualisieren: `./gradlew :schedule:jvmRun --args="$PWD/schedule/schedules.json"` und
+  committen. Die Release- und Deploy-Workflows laden vor dem Bauen automatisch den aktuellen Stand.
+- **Updates:** `deploy-web.yml` lädt die Pläne mehrmals täglich von eva2 und veröffentlicht sie als
+  `schedules.json`. Android- und Web-App laden diese Datei, Änderungen kommen also ohne neue APK an.
+  `schedule.json` enthält dieselben Pläne im alten Format für Android-Apps bis v1.4.0.
+
+`./gradlew :schedule:jvmTest` prüft Parser und Wochenregeln gegen gespeicherte eva2-Seiten.
 
 ## Mensa-Speiseplan
 

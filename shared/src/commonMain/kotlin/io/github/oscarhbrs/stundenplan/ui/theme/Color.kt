@@ -31,7 +31,7 @@ object SubjectColors {
     private val einfWi = SubjectColor(Color(0xFF3949AB), Color(0xFF7986CB))
     private val einfBwl = SubjectColor(Color(0xFF2E7D32), Color(0xFF81C784))
     private val businessEnglish = SubjectColor(Color(0xFF6D4C41), Color(0xFFBCAAA4))
-    private val fallback = SubjectColor(Color(0xFF546E7A), Color(0xFF90A4AE))
+    val fallback = SubjectColor(Color(0xFF546E7A), Color(0xFF90A4AE))
 
     private val bySubject = linkedMapOf(
         "Programmierung 1" to programmierung1,
@@ -41,25 +41,40 @@ object SubjectColors {
         "Datenschutz, IT-Recht und Privatheit" to datenschutz,
         "Informationssicherheit" to infosec,
         "Technische Informatik" to techinf,
-        "Technische Informatik P1" to techinf,
-        "Technische Informatik P2" to techinf,
         "Einführung in die Wirtschaftsinformatik" to einfWi,
         "Einführung in die Betriebswirtschaftslehre" to einfBwl,
         "Business English for BIS" to businessEnglish
     )
 
-    val legendEntries: List<Pair<String, SubjectColor>> = listOf(
-        "Programmierung 1" to programmierung1,
-        "Algebraische Strukturen" to mathematik,
-        "Mathematische Grundlagen und Lineare Algebra" to mathematik,
-        "Netze" to netze,
-        "Datenschutz, IT-Recht und Privatheit" to datenschutz,
-        "Informationssicherheit" to infosec,
-        "Technische Informatik" to techinf,
-        "Einführung in die Wirtschaftsinformatik" to einfWi,
-        "Einführung in die Betriebswirtschaftslehre" to einfBwl,
-        "Business English for BIS" to businessEnglish
+    private val palette = bySubject.values.distinct() + listOf(
+        SubjectColor(Color(0xFF00838F), Color(0xFF4DD0E1)),
+        SubjectColor(Color(0xFF6A1B9A), Color(0xFFCE93D8)),
+        SubjectColor(Color(0xFF558B2F), Color(0xFFAED581)),
+        SubjectColor(Color(0xFFFF8F00), Color(0xFFFFCA28)),
+        SubjectColor(Color(0xFFC62828), Color(0xFFEF9A9A)),
+        SubjectColor(Color(0xFF1565C0), Color(0xFF90CAF9)),
+        SubjectColor(Color(0xFF827717), Color(0xFFDCE775)),
+        SubjectColor(Color(0xFFBF360C), Color(0xFFFFAB91)),
+        SubjectColor(Color(0xFFAD1457), Color(0xFFF48FB1))
     )
 
-    fun colorFor(subjectTitle: String): SubjectColor = bySubject[subjectTitle] ?: fallback
+    private val practicalPart = Regex(" P\\d+$")
+
+    /** "Technische Informatik P1" belongs to "Technische Informatik". */
+    fun subjectOf(title: String): String = title.replace(practicalPart, "")
+
+    /**
+     * Colors for the subjects of [titles], in legend order: known subjects keep their color, the others
+     * get the palette colors not used yet.
+     */
+    fun assign(titles: Collection<String>): Map<String, SubjectColor> {
+        val subjects = titles.map(::subjectOf).toSet()
+        val result = LinkedHashMap<String, SubjectColor>()
+        bySubject.filterKeys { it in subjects }.forEach { (subject, color) -> result[subject] = color }
+        val free = palette.filter { it !in result.values }
+        subjects.filter { it !in result }.sorted().forEachIndexed { index, subject ->
+            result[subject] = free.getOrNull(index) ?: palette[(index - free.size) % palette.size]
+        }
+        return result
+    }
 }
