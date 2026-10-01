@@ -1,6 +1,10 @@
-package io.github.oscarhbrs.stundenplan.data
+package io.github.oscarhbrs.stundenplan.schedule
+
+import kotlinx.datetime.LocalDate
 
 object ScheduleData {
+
+    private val KW_41 = LocalDate(2026, 10, 5)
 
     private val bcsp: List<Course> = listOf(
         Course(Weekday.MONTAG, "08:15", "09:45", "Netze", CourseType.UEBUNG_PRAKTIKUM, "St-C055, St-C115", "Schneider M.", GroupSpec.Numbers(listOf(1, 6))),
@@ -21,9 +25,9 @@ object ScheduleData {
         Course(Weekday.DONNERSTAG, "08:15", "09:45", "Netze", CourseType.VORLESUNG, "St-HS1/2", "Böhmer J., Rademacher", GroupSpec.All),
         Course(Weekday.DONNERSTAG, "10:00", "11:30", "Netze", CourseType.UEBUNG_PRAKTIKUM, "St-C055, St-C063", "Böhmer J.", GroupSpec.Numbers(listOf(3))),
         Course(Weekday.DONNERSTAG, "13:30", "15:00", "Informationssicherheit", CourseType.VORLESUNG, "St-HS8", "Schiffner", GroupSpec.All),
-        Course(Weekday.DONNERSTAG, "15:15", "16:45", "Informationssicherheit", CourseType.UEBUNG, "St-C119", "Schiffner", GroupSpec.Numbers(listOf(1, 6)), "nur gerade KW (40–04)"),
-        Course(Weekday.DONNERSTAG, "15:15", "16:45", "Informationssicherheit", CourseType.UEBUNG, "St-C119", "Schiffner", GroupSpec.Numbers(listOf(3, 4)), "nur ungerade KW (41–03)"),
-        Course(Weekday.DONNERSTAG, "15:15", "16:45", "Informationssicherheit", CourseType.UEBUNG, "St-C063", "Fuchs", GroupSpec.Numbers(listOf(2, 5)), "nur ungerade KW (41–03)"),
+        Course(Weekday.DONNERSTAG, "15:15", "16:45", "Informationssicherheit", CourseType.UEBUNG, "St-C119", "Schiffner", GroupSpec.Numbers(listOf(1, 6)), "nur gerade KW (40–04)", weeks = WeekParity.EVEN),
+        Course(Weekday.DONNERSTAG, "15:15", "16:45", "Informationssicherheit", CourseType.UEBUNG, "St-C119", "Schiffner", GroupSpec.Numbers(listOf(3, 4)), "nur ungerade KW (41–03)", weeks = WeekParity.ODD),
+        Course(Weekday.DONNERSTAG, "15:15", "16:45", "Informationssicherheit", CourseType.UEBUNG, "St-C063", "Fuchs", GroupSpec.Numbers(listOf(2, 5)), "nur ungerade KW (41–03)", weeks = WeekParity.ODD),
 
         Course(Weekday.FREITAG, "08:15", "09:45", "Programmierung 1", CourseType.VORLESUNG, "St-HS8", "Kless", GroupSpec.All),
         Course(Weekday.FREITAG, "10:00", "11:30", "Algebraische Strukturen", CourseType.UEBUNG, "St-B062", "Marcov", GroupSpec.Numbers(listOf(2, 5))),
@@ -63,22 +67,22 @@ object ScheduleData {
 
     private val bwi: List<Course> = listOf(
         Course(Weekday.MONTAG, "08:15", "09:45", "Programmierung 1", CourseType.VORLESUNG, "St-HS8", "Balg", GroupSpec.All),
-        Course(Weekday.MONTAG, "10:00", "11:30", "Mathematische Grundlagen und Lineare Algebra", CourseType.UEBUNG, "St-B060", "Lanzerath", GroupSpec.Numbers(listOf(4)), "ab KW 41 (41–04)"),
-        Course(Weekday.MONTAG, "10:00", "11:30", "Mathematische Grundlagen und Lineare Algebra", CourseType.UEBUNG, "St-B062", "Weil", GroupSpec.Numbers(listOf(3)), "ab KW 41 (41–04)"),
+        Course(Weekday.MONTAG, "10:00", "11:30", "Mathematische Grundlagen und Lineare Algebra", CourseType.UEBUNG, "St-B060", "Lanzerath", GroupSpec.Numbers(listOf(4)), "ab KW 41 (41–04)", from = KW_41),
+        Course(Weekday.MONTAG, "10:00", "11:30", "Mathematische Grundlagen und Lineare Algebra", CourseType.UEBUNG, "St-B062", "Weil", GroupSpec.Numbers(listOf(3)), "ab KW 41 (41–04)", from = KW_41),
         Course(Weekday.MONTAG, "10:00", "11:30", "Einführung in die Wirtschaftsinformatik", CourseType.UEBUNG, "St-C115", "Bergmann", GroupSpec.Numbers(listOf(1, 6))),
         Course(Weekday.MONTAG, "11:45", "13:15", "Einführung in die Wirtschaftsinformatik", CourseType.VORLESUNG, "St-HS8", "Bergmann", GroupSpec.All),
-        Course(Weekday.MONTAG, "15:15", "16:45", "Mathematische Grundlagen und Lineare Algebra", CourseType.UEBUNG, "St-B062", "Weil", GroupSpec.Numbers(listOf(6)), "ab KW 41 (41–04)"),
+        Course(Weekday.MONTAG, "15:15", "16:45", "Mathematische Grundlagen und Lineare Algebra", CourseType.UEBUNG, "St-B062", "Weil", GroupSpec.Numbers(listOf(6)), "ab KW 41 (41–04)", from = KW_41),
 
         Course(Weekday.DIENSTAG, "08:15", "09:45", "Programmierung 1", CourseType.VORLESUNG, "St-HS8", "Balg", GroupSpec.All),
-        Course(Weekday.DIENSTAG, "10:00", "11:30", "Mathematische Grundlagen und Lineare Algebra", CourseType.UEBUNG, "St-B060", "Lanzerath", GroupSpec.Numbers(listOf(2)), "ab KW 41 (41–04)"),
+        Course(Weekday.DIENSTAG, "10:00", "11:30", "Mathematische Grundlagen und Lineare Algebra", CourseType.UEBUNG, "St-B060", "Lanzerath", GroupSpec.Numbers(listOf(2)), "ab KW 41 (41–04)", from = KW_41),
         Course(Weekday.DIENSTAG, "10:00", "12:15", "Programmierung 1", CourseType.PRAKTIKUM, "St-C175", "Balg", GroupSpec.Numbers(listOf(1, 6))),
         Course(Weekday.DIENSTAG, "10:00", "11:30", "Einführung in die Wirtschaftsinformatik", CourseType.UEBUNG, "St-C018", "Bergmann", GroupSpec.Numbers(listOf(3, 4))),
         Course(Weekday.DIENSTAG, "11:45", "13:15", "Einführung in die Wirtschaftsinformatik", CourseType.UEBUNG, "St-C018", "Bergmann", GroupSpec.Numbers(listOf(2, 5))),
         Course(Weekday.DIENSTAG, "14:15", "16:30", "Programmierung 1", CourseType.PRAKTIKUM, "St-C175", "Balg", GroupSpec.Numbers(listOf(2, 5))),
 
-        Course(Weekday.MITTWOCH, "13:30", "15:00", "Mathematische Grundlagen und Lineare Algebra", CourseType.UEBUNG, "St-C175", "Weil", GroupSpec.Numbers(listOf(1)), "ab KW 41 (41–04)"),
+        Course(Weekday.MITTWOCH, "13:30", "15:00", "Mathematische Grundlagen und Lineare Algebra", CourseType.UEBUNG, "St-C175", "Weil", GroupSpec.Numbers(listOf(1)), "ab KW 41 (41–04)", from = KW_41),
         Course(Weekday.MITTWOCH, "15:15", "16:45", "Mathematische Grundlagen und Lineare Algebra", CourseType.VORLESUNG, "St-HS8", "Weil", GroupSpec.All),
-        Course(Weekday.MITTWOCH, "17:00", "18:30", "Mathematische Grundlagen und Lineare Algebra", CourseType.UEBUNG, "St-B060", "Lanzerath", GroupSpec.Numbers(listOf(5)), "ab KW 41 (41–04)"),
+        Course(Weekday.MITTWOCH, "17:00", "18:30", "Mathematische Grundlagen und Lineare Algebra", CourseType.UEBUNG, "St-B060", "Lanzerath", GroupSpec.Numbers(listOf(5)), "ab KW 41 (41–04)", from = KW_41),
 
         Course(Weekday.DONNERSTAG, "09:15", "11:30", "Programmierung 1", CourseType.PRAKTIKUM, "St-C175", "Balg", GroupSpec.Numbers(listOf(3, 4))),
         Course(Weekday.DONNERSTAG, "09:15", "11:30", "Business English for BIS", CourseType.SEMINARISTISCHER_UNTERRICHT, "St-B060", "Müller-SPZ", GroupSpec.EnglishGroup("A")),
@@ -93,9 +97,8 @@ object ScheduleData {
         Course(Weekday.FREITAG, "11:45", "13:15", "Einführung in die Betriebswirtschaftslehre", CourseType.UEBUNG, "St-HS8", "Bonne", GroupSpec.All)
     )
 
-    fun coursesFor(program: Program): List<Course> = when (program) {
-        Program.BCSP -> bcsp
-        Program.BI -> bi
-        Program.BWI -> bwi
-    }
+    val schedule = Schedule(
+        term = Term(start = LocalDate(2026, 9, 28), end = LocalDate(2027, 1, 22)),
+        courses = mapOf(Program.BCSP to bcsp, Program.BI to bi, Program.BWI to bwi)
+    )
 }

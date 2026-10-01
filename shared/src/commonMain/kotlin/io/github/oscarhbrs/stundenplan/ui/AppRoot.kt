@@ -10,6 +10,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -17,22 +18,26 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import io.github.oscarhbrs.stundenplan.data.MensaRepository
+import io.github.oscarhbrs.stundenplan.data.ScheduleRepository
 import io.github.oscarhbrs.stundenplan.data.SelectionStore
 import io.github.oscarhbrs.stundenplan.data.toggle
 import io.github.oscarhbrs.stundenplan.ui.theme.AppIcons
 
 private enum class AppTab(val label: String, val icon: ImageVector) {
     STUNDENPLAN("Stundenplan", AppIcons.Calendar),
-    STUDIENGANG("Studiengang", AppIcons.School),
     MENSA("Mensa", AppIcons.Restaurant),
     PORTALE("Portale", AppIcons.Link)
 }
 
 @Composable
-fun AppRoot(store: SelectionStore, mensa: MensaRepository) {
+fun AppRoot(store: SelectionStore, schedules: ScheduleRepository, mensa: MensaRepository) {
     var selection by remember { mutableStateOf(store.load()) }
-    var currentTab by remember {
-        mutableStateOf(if (selection.isEmpty()) AppTab.STUDIENGANG else AppTab.STUNDENPLAN)
+    var schedule by remember { mutableStateOf(schedules.current()) }
+    var currentTab by remember { mutableStateOf(AppTab.STUNDENPLAN) }
+    var showGroupPicker by remember { mutableStateOf(selection.isEmpty()) }
+
+    LaunchedEffect(Unit) {
+        schedules.refresh()?.let { schedule = it }
     }
 
     Scaffold(
@@ -55,17 +60,25 @@ fun AppRoot(store: SelectionStore, mensa: MensaRepository) {
                 .padding(bottom = innerPadding.calculateBottomPadding())
         ) {
             when (currentTab) {
-                AppTab.STUNDENPLAN -> ScheduleScreen(selection = selection)
-                AppTab.STUDIENGANG -> ProgramSelectionScreen(
-                    selected = selection,
-                    onToggle = { group ->
-                        selection = selection.toggle(group)
-                        store.save(selection)
-                    }
+                AppTab.STUNDENPLAN -> ScheduleScreen(
+                    schedule = schedule,
+                    selection = selection,
+                    onOpenGroupPicker = { showGroupPicker = true }
                 )
                 AppTab.MENSA -> MensaScreen(repository = mensa)
                 AppTab.PORTALE -> PortalsScreen()
             }
         }
+    }
+
+    if (showGroupPicker) {
+        GroupPickerSheet(
+            selected = selection,
+            onToggle = { group ->
+                selection = selection.toggle(group)
+                store.save(selection)
+            },
+            onDismiss = { showGroupPicker = false }
+        )
     }
 }

@@ -22,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.github.oscarhbrs.stundenplan.data.CourseType
+import io.github.oscarhbrs.stundenplan.schedule.CourseType
 import io.github.oscarhbrs.stundenplan.ui.theme.SubjectColors
 
 @Composable

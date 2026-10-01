@@ -1,12 +1,23 @@
 package io.github.oscarhbrs.stundenplan.data
 
+import io.github.oscarhbrs.stundenplan.schedule.Course
+import io.github.oscarhbrs.stundenplan.schedule.GroupSpec
+import io.github.oscarhbrs.stundenplan.schedule.Schedule
+import io.github.oscarhbrs.stundenplan.schedule.Weekday
+import io.github.oscarhbrs.stundenplan.schedule.displayLabel
+import io.github.oscarhbrs.stundenplan.schedule.hasCourseOn
+import io.github.oscarhbrs.stundenplan.schedule.matches
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
+import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.isoDayNumber
+import kotlinx.datetime.minus
+import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
 
 val orderedWeekdays = listOf(
@@ -25,6 +36,15 @@ fun currentWeekday(date: LocalDate = nowLocal().date): Weekday? = when (date.day
     else -> null
 }
 
+/** Monday of the week to show: the current one, or the next one on weekends. */
+fun displayedMonday(today: LocalDate): LocalDate {
+    val monday = today.minus(today.dayOfWeek.isoDayNumber - 1, DateTimeUnit.DAY)
+    return if (today.dayOfWeek >= DayOfWeek.SATURDAY) monday.plus(1, DateTimeUnit.WEEK) else monday
+}
+
+fun weekDates(monday: LocalDate): Map<Weekday, LocalDate> =
+    orderedWeekdays.associateWith { day -> monday.plus(day.ordinal, DateTimeUnit.DAY) }
+
 fun Course.startTime(): LocalTime = LocalTime.parse(start)
 fun Course.endTime(): LocalTime = LocalTime.parse(end)
 
@@ -34,11 +54,17 @@ fun Course.endTime(): LocalTime = LocalTime.parse(end)
  */
 data class ScheduledCourse(val course: Course, val groups: List<GroupSelection>, val groupLabel: String?)
 
-fun scheduleFor(selections: List<GroupSelection>): Map<Weekday, List<ScheduledCourse>> {
+/** The courses of [selections] that take place in the week starting on [monday]. */
+fun scheduleFor(
+    schedule: Schedule,
+    selections: List<GroupSelection>,
+    monday: LocalDate
+): Map<Weekday, List<ScheduledCourse>> {
+    val dates = weekDates(monday)
     val merged = LinkedHashMap<Course, Pair<Course, MutableList<GroupSelection>>>()
     selections.sortedForDisplay().forEach { selection ->
-        ScheduleData.coursesFor(selection.program)
-            .filter { it.groups.matches(selection.group) }
+        schedule.coursesFor(selection.program)
+            .filter { it.groups.matches(selection.group) && schedule.term.hasCourseOn(it, dates.getValue(it.day)) }
             .forEach { course ->
                 val entry = merged.getOrPut(course.copy(groups = GroupSpec.All)) { course to mutableListOf() }
                 entry.second += selection

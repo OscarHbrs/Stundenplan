@@ -1,5 +1,6 @@
 # Builds the web version (PWA) and publishes it on GitHub Pages, together with the current
-# Mensa menu as mensa.json (the browser may not load the Studierendenwerk website directly).
+# Mensa menu as mensa.json (the browser may not load the Studierendenwerk website directly)
+# and the timetable as schedule.json (loaded by the Android app, so it needs no update for changes).
 # One-time setup: Settings → Pages → Source: "GitHub Actions".
 name: Web-App deployen
 
@@ -39,6 +40,9 @@ jobs:
 
       - name: Web-App bauen
         run: ./gradlew :webApp:wasmJsBrowserDistribution
+
+      - name: Stundenplan exportieren
+        run: ./gradlew :schedule:jvmRun --args="$PWD/webApp/build/dist/wasmJs/productionExecutable/schedule.json"
 
       # If the website changed and the export fails, keep the previously published menu.
       - name: Mensa-Speiseplan exportieren

@@ -25,6 +25,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "Stundenplan"
 include(":mensa")
+include(":schedule")
 include(":shared")
 include(":androidApp")
 include(":webApp")

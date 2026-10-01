@@ -8,20 +8,24 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,51 +33,60 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.oscarhbrs.stundenplan.data.GROUP_NUMBERS
 import io.github.oscarhbrs.stundenplan.data.GroupSelection
-import io.github.oscarhbrs.stundenplan.data.Program
+import io.github.oscarhbrs.stundenplan.schedule.Program
 import io.github.oscarhbrs.stundenplan.ui.theme.AppIcons
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProgramSelectionScreen(
+fun GroupPickerSheet(
     selected: List<GroupSelection>,
     onToggle: (GroupSelection) -> Unit,
-    modifier: Modifier = Modifier
+    onDismiss: () -> Unit
 ) {
-    // On the web, the notch height comes from the safe-area insets; Android keeps its fixed padding.
-    val topPadding = LocalSafeAreaInsets.current
-        ?.let { with(LocalDensity.current) { it.getTop(this).toDp() } + 24.dp }
-        ?: 48.dp
-    LazyColumn(
-        modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(start = 16.dp, top = topPadding, end = 16.dp, bottom = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+    val safeArea = LocalSafeAreaInsets.current
+    ModalBottomSheet(
+        onDismissRequest = onDismiss,
+        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+        containerColor = MaterialTheme.colorScheme.background,
+        contentWindowInsets = { safeArea ?: BottomSheetDefaults.windowInsets }
     ) {
-        item {
-            Text(
-                text = "Gruppen wählen",
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Text(
-                text = "Wähle eine oder mehrere Gruppen, auch aus verschiedenen Studiengängen. Der Stundenplan zeigt alle Kurse dieser Gruppen.",
-                fontSize = 13.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(top = 4.dp)
-            )
-        }
+        LazyColumn(
+            contentPadding = PaddingValues(start = 16.dp, top = 0.dp, end = 16.dp, bottom = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            item {
+                Text(
+                    text = "Gruppen wählen",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Text(
+                    text = "Wähle eine oder mehrere Gruppen, auch aus verschiedenen Studiengängen. Der Stundenplan zeigt alle Kurse dieser Gruppen.",
+                    fontSize = 13.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
+            }
 
-        items(Program.entries.toList()) { program ->
-            ProgramSection(
-                program = program,
-                selected = selected,
-                onToggle = onToggle
-            )
+            items(Program.entries.toList()) { program ->
+                ProgramSection(
+                    program = program,
+                    selected = selected,
+                    onToggle = onToggle
+                )
+            }
+
+            item {
+                Button(onClick = onDismiss, modifier = Modifier.fillMaxWidth()) {
+                    Text("Fertig")
+                }
+            }
         }
     }
 }

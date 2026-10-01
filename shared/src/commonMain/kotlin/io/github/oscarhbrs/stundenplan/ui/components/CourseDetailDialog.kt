@@ -23,9 +23,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import io.github.oscarhbrs.stundenplan.data.Course
-import io.github.oscarhbrs.stundenplan.data.displayTitle
-import io.github.oscarhbrs.stundenplan.data.effectiveNote
+import io.github.oscarhbrs.stundenplan.schedule.Course
+import io.github.oscarhbrs.stundenplan.schedule.displayTitle
+import io.github.oscarhbrs.stundenplan.schedule.effectiveNote
 import io.github.oscarhbrs.stundenplan.ui.theme.AppIcons
 import io.github.oscarhbrs.stundenplan.ui.theme.SubjectColors
 import io.github.oscarhbrs.stundenplan.ui.theme.TimeTextStyle

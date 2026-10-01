@@ -14,6 +14,7 @@ import androidx.compose.ui.window.ComposeViewport
 import io.github.oscarhbrs.stundenplan.App
 import io.github.oscarhbrs.stundenplan.data.KeyValueStorage
 import io.github.oscarhbrs.stundenplan.data.MensaRepository
+import io.github.oscarhbrs.stundenplan.data.ScheduleRepository
 import io.github.oscarhbrs.stundenplan.data.SelectionStore
 import io.github.oscarhbrs.stundenplan.mensa.MensaJson
 import io.github.oscarhbrs.stundenplan.mensa.MensaPlan
@@ -27,6 +28,8 @@ import org.w3c.fetch.Response
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
     val store = SelectionStore(LocalStorage)
+    // The web app is redeployed whenever the timetable changes, so the built-in one is always current.
+    val schedules = ScheduleRepository(LocalStorage)
     // Built every few hours by the deploy workflow; the website itself can't be fetched cross-origin.
     val mensa = MensaRepository(LocalStorage) {
         MensaJson.decodeFromString(MensaPlan.serializer(), fetchText("mensa.json"))
@@ -39,7 +42,7 @@ fun main() {
             hideLoadingScreen()
             onDispose { window.removeEventListener("resize", listener) }
         }
-        App(store = store, mensa = mensa, safeAreaInsets = insets)
+        App(store = store, schedules = schedules, mensa = mensa, safeAreaInsets = insets)
     }
 }
 

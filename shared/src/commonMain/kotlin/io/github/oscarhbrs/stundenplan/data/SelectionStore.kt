@@ -1,5 +1,7 @@
 package io.github.oscarhbrs.stundenplan.data
 
+import io.github.oscarhbrs.stundenplan.schedule.Program
+
 private const val KEY_GROUPS = "selected_groups"
 private const val KEY_LEGACY_PROGRAM = "selected_program"
 private const val KEY_LEGACY_GROUP = "selected_group"

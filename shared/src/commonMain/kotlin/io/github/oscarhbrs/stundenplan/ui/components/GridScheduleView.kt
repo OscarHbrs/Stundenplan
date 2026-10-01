@@ -22,7 +22,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,23 +36,20 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.oscarhbrs.stundenplan.data.ScheduledCourse
-import io.github.oscarhbrs.stundenplan.data.Weekday
-import io.github.oscarhbrs.stundenplan.data.displayTitle
-import io.github.oscarhbrs.stundenplan.data.effectiveNote
+import io.github.oscarhbrs.stundenplan.data.currentWeekday
 import io.github.oscarhbrs.stundenplan.data.endTime
-import io.github.oscarhbrs.stundenplan.data.nowLocal
 import io.github.oscarhbrs.stundenplan.data.orderedWeekdays
 import io.github.oscarhbrs.stundenplan.data.startTime
+import io.github.oscarhbrs.stundenplan.data.weekDates
+import io.github.oscarhbrs.stundenplan.schedule.Weekday
+import io.github.oscarhbrs.stundenplan.schedule.displayTitle
+import io.github.oscarhbrs.stundenplan.schedule.effectiveNote
 import io.github.oscarhbrs.stundenplan.ui.theme.AppIcons
 import io.github.oscarhbrs.stundenplan.ui.theme.CurrentTimeLineColor
 import io.github.oscarhbrs.stundenplan.ui.theme.SubjectColors
-import kotlinx.coroutines.delay
-import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
-import kotlinx.datetime.isoDayNumber
-import kotlinx.datetime.minus
-import kotlinx.datetime.plus
 
 private const val GRID_START_HOUR = 8
 private const val GRID_END_HOUR = 19
@@ -68,24 +64,12 @@ private val GERMAN_MONTHS_SHORT = listOf(
 @Composable
 fun GridScheduleView(
     schedule: Map<Weekday, List<ScheduledCourse>>,
-    today: Weekday?,
+    monday: LocalDate,
+    now: LocalDateTime,
     modifier: Modifier = Modifier
 ) {
-    var now by remember { mutableStateOf(nowLocal()) }
-    LaunchedEffect(Unit) {
-        while (true) {
-            delay(60_000)
-            now = nowLocal()
-        }
-    }
-
-    val monday = remember {
-        val today = nowLocal().date
-        today.minus(today.dayOfWeek.isoDayNumber - 1, DateTimeUnit.DAY)
-    }
-    val dates = remember(monday) {
-        orderedWeekdays.associateWith { day -> monday.plus(orderedWeekdays.indexOf(day), DateTimeUnit.DAY) }
-    }
+    val dates = remember(monday) { weekDates(monday) }
+    val today = currentWeekday(now.date)
     val totalMinutes = (GRID_END_HOUR - GRID_START_HOUR) * 60
     val totalHeight = DP_PER_MINUTE * totalMinutes
 
@@ -113,12 +97,14 @@ fun GridScheduleView(
                         }
                     }
                 }
-                CurrentTimeLine(
-                    now = now.time,
-                    today = today,
-                    visibleDays = orderedWeekdays,
-                    totalHeight = totalHeight
-                )
+                if (today != null) {
+                    CurrentTimeLine(
+                        now = now.time,
+                        today = today,
+                        visibleDays = orderedWeekdays,
+                        totalHeight = totalHeight
+                    )
+                }
             }
         }
     }
@@ -359,7 +345,7 @@ private fun CourseBlock(scheduled: ScheduledCourse, modifier: Modifier = Modifie
 @Composable
 private fun CurrentTimeLine(
     now: LocalTime,
-    today: Weekday?,
+    today: Weekday,
     visibleDays: List<Weekday>,
     totalHeight: Dp
 ) {
@@ -370,7 +356,7 @@ private fun CurrentTimeLine(
     val totalMinutes = (GRID_END_HOUR - GRID_START_HOUR) * 60
     val nowMinutes = (now.hour - GRID_START_HOUR) * 60 + now.minute
     val fraction = nowMinutes.toFloat() / totalMinutes.toFloat()
-    val todayIndex = today?.let { visibleDays.indexOf(it) }?.takeIf { it >= 0 }
+    val todayIndex = visibleDays.indexOf(today).takeIf { it >= 0 }
 
     Canvas(modifier = Modifier.fillMaxWidth().height(totalHeight)) {
         val y = size.height * fraction

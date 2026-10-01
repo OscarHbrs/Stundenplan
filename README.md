@@ -21,12 +21,20 @@ Kotlin Multiplatform + Compose Multiplatform – die Oberfläche wird einmal ges
 
 | Modul        | Inhalt                                                                  |
 |--------------|-------------------------------------------------------------------------|
-| `shared/`    | Gesamte App: Stundenplandaten (`data/`) und Oberfläche (`ui/`)          |
+| `shared/`    | Gesamte App: Logik (`data/`) und Oberfläche (`ui/`)                     |
 | `androidApp/`| Android-Einstieg (`MainActivity`) und Speicherung per SharedPreferences |
 | `webApp/`    | Web-Einstieg (Kotlin/Wasm), `index.html`, PWA-Manifest, Service Worker  |
+| `schedule/`  | Stundenplandaten, Wochenregeln und JSON-Export (`jvmMain`)              |
 | `mensa/`     | Mensa-Speiseplan: Datenmodell, HTML-Parser und JSON-Export (`jvmMain`)  |
 
-Stundenplan ändern: `shared/src/commonMain/kotlin/io/github/oscarhbrs/stundenplan/data/ScheduleData.kt`.
+Stundenplan ändern: `schedule/src/commonMain/kotlin/io/github/oscarhbrs/stundenplan/schedule/ScheduleData.kt`.
+Dort stehen auch die Vorlesungszeit (`Term`, inkl. vorlesungsfreier Tage in `breaks`) und pro Termin die
+Wochenregeln (`weeks = WeekParity.EVEN/ODD`, `from = …`). Die App zeigt nur Termine, die in der angezeigten
+Woche wirklich stattfinden.
+
+Nach dem Push veröffentlicht `deploy-web.yml` den Plan zusätzlich als `schedule.json`. Die Android-App lädt
+diese Datei beim Start, Änderungen kommen also ohne neue APK an. `./gradlew :schedule:jvmTest` prüft die
+Wochenregeln.
 
 ## Mensa-Speiseplan
 

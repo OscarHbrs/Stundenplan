@@ -1,5 +1,17 @@
-package io.github.oscarhbrs.stundenplan.data
+package io.github.oscarhbrs.stundenplan.schedule
 
+import kotlinx.datetime.LocalDate
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
+enum class Program(val displayName: String, val fullName: String) {
+    BCSP("BCSP", "Cyber Security"),
+    BI("BI", "Informatik"),
+    BWI("BWI", "Wirtschaftsinformatik")
+}
+
+@Serializable
 enum class CourseType(val shortLabel: String, val fullLabel: String) {
     VORLESUNG("V", "Vorlesung"),
     UEBUNG("Ü", "Übung"),
@@ -8,14 +20,23 @@ enum class CourseType(val shortLabel: String, val fullLabel: String) {
     SEMINARISTISCHER_UNTERRICHT("SU", "Seminaristischer Unterricht")
 }
 
+@Serializable
 sealed class GroupSpec {
-    object All : GroupSpec()
+    @Serializable
+    @SerialName("all")
+    data object All : GroupSpec()
 
+    @Serializable
+    @SerialName("numbers")
     data class Numbers(val numbers: List<Int>) : GroupSpec()
 
+    @Serializable
+    @SerialName("english")
     data class EnglishGroup(val letter: String) : GroupSpec()
 
-    object AllWithNote : GroupSpec()
+    @Serializable
+    @SerialName("allWithNote")
+    data object AllWithNote : GroupSpec()
 }
 
 fun GroupSpec.matches(group: Int): Boolean = when (this) {
@@ -32,6 +53,11 @@ fun GroupSpec.displayLabel(): String? = when (this) {
     is GroupSpec.EnglishGroup -> "Gr. $letter"
 }
 
+/** Calendar weeks (ISO) a course takes place in. */
+@Serializable
+enum class WeekParity { ALL, EVEN, ODD }
+
+@Serializable
 data class Course(
     val day: Weekday,
     val start: String,
@@ -41,7 +67,9 @@ data class Course(
     val room: String,
     val lecturer: String,
     val groups: GroupSpec,
-    val note: String? = null
+    val note: String? = null,
+    val weeks: WeekParity = WeekParity.ALL,
+    val from: LocalDate? = null
 )
 
 fun Course.displayTitle(): String {
@@ -54,6 +82,7 @@ fun Course.effectiveNote(): String? = when (groups) {
     else -> note
 }
 
+@Serializable
 enum class Weekday(val label: String, val shortLabel: String) {
     MONTAG("Montag", "Mo"),
     DIENSTAG("Dienstag", "Di"),
